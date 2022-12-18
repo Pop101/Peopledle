@@ -24,7 +24,7 @@ def post():
     return data
 
 
-def pick_language():
+def pick_person():
     global language
     with open("languages.json") as f:
         langs = load(f)
@@ -33,15 +33,14 @@ def pick_language():
 
 
 if __name__ == "__main__":
-    pick_language()
+    pick_person()
 
     apsched = BackgroundScheduler()
     apsched.start()
-
-    apsched.add_job(pick_language, "cron", day="*", hour="0")
+    apsched.add_job(pick_person, "cron", day="*", hour="0")
 
     with app.test_client() as c:
-        rv = c.post("/submit", json={"code": 'print "hello world"', "other": "data"})
+        rv = c.post("/submit", json=data)
         pass
 
     print("Starting server on port 8787")
