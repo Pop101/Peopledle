@@ -99,6 +99,7 @@ def fetch_person_text(name: str) -> str:
     content = re.sub(r"=+\s+.*?\s+=+", "", content)
     content = re.sub(r"\s+", " ", content.replace("\n", " "))
 
+    # Parse out sentences that contain the person's name
     sentences_with_name = set()
     for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + " " + content):
         for name_part in name.split():
@@ -106,8 +107,20 @@ def fetch_person_text(name: str) -> str:
                 sentences_with_name.add(sentence)
                 break
 
+    # Get the page image, if it exists
+    img = "/static/img/question.svg"
+    parsel = Selector(page.html())  # very slow, but necessary to get the correct image
+    if html_img := parsel.xpath('//tbody/tr/td[contains(@class, "photo")]/a'):
+        img = html_img.xpath("./@href").get()
+
     db_name = re.sub(r"[.\\]", "", name)
-    db[db_name] = {**db[db_name], "summary": summary, "content": content, "sentences": list(sentences_with_name)}
+    db[db_name] = {
+        **db[db_name],
+        "img": img,
+        "summary": summary,
+        "content": content,
+        "sentences": list(sentences_with_name),
+    }
 
 
 if __name__ == "__main__":
