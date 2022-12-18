@@ -2,3 +2,4 @@ Flask==2.0.2
 waitress==2.1.2
 wikipedia==1.4.0
 parsel==1.7.0
+anyascii==0.3.1
