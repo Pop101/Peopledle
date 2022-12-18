@@ -14,7 +14,7 @@ import wikipedia
 #   h4 (optional): nanosection title
 #   ol: list of links (note: there are anchors with class="image". Ignore these)
 
-REQUEST_DELAY = 1.5  # seconds
+REQUEST_DELAY = 0.5  # seconds
 
 db = MongrelDB("./data")
 time_of_last_request = 0
@@ -65,10 +65,14 @@ def fetch_people_list_level4() -> list[dict]:
         elif elem_type == "a":
             # store href, text, and category in db
             person = elem.css("::text").get()
+            href = elem.xpath("@href").get()
+            if "Wikipedia:" in href:
+                continue
+
             print(person)
             db[re.sub(r"[.\\]", "", person)] = {
                 "name": person,
-                "url": f'https://en.wikipedia.org{elem.xpath("@href").get()}',
+                "url": f"https://en.wikipedia.org{href}",
                 "categories": current_category,
                 "difficulty": 4,
             }
@@ -110,4 +114,4 @@ if __name__ == "__main__":
     fetch_people_list_level4()
     for name in db:
         print(f"Fetching {name}...")
-        fetch_person_text(name)
+        fetch_person_text(db[name]["name"])
