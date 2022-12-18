@@ -1,0 +1,10 @@
+[
+    {
+        "name": "cobol",
+        "version": "3.1.2",
+        "link": "https://en.wikipedia.org/wiki/COBOL",
+        "description": "COBOL (COmmon Business-Oriented Language) is a compiled English-like computer programming language designed for business use. COBOL is imperative, procedural and, since 2002, object-oriented. COBOL is primarily used in business, finance, and administrative systems for companies and governments.",
+        "boilerplate": "IDENTIFICATION DIVISION.\nPROGRAM-ID. %s.\nPROCEDURE DIVISION.\n%s\nSTOP RUN.",
+        "filename": "cobol.cbl"
+    }
+]

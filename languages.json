@@ -1,0 +1,202 @@
+[
+    {
+        "name": "bash",
+        "version": "5.1.0",
+        "link": "https://www.gnu.org/software/bash/",
+        "description": "Bash is the GNU Project's shell. Bash is the Bourne Again SHell. Bash is an sh-compatible shell that incorporates useful features from the Korn shell (ksh) and C shell (csh).",
+        "boilerplate": "%s",
+        "filename": "bash.sh"
+    },
+    {
+        "name": "coffeescript",
+        "version": "2.5.1",
+        "link": "https://coffeescript.org/",
+        "description": "CoffeeScript is a programming language that transcompiles to JavaScript. CoffeeScript is a little language that compiles into JavaScript. Underneath that awkward Java-esque patina, JavaScript has always had a gorgeous heart. CoffeeScript is an attempt to expose the good parts of JavaScript in a simple way.",
+        "boilerplate": "%s",
+        "filename": "coffeescript.coffee"
+    },
+    {
+        "name": "crystal",
+        "version": "0.36.1",
+        "link": "https://crystal-lang.org/",
+        "description": "Crystal is a general-purpose, object-oriented programming language with the following characteristics: statically typed, garbage collected, compiled to native code, and with a syntax similar to Ruby.",
+        "boilerplate": "%s",
+        "filename": "crystal.cr"
+    },
+    {
+        "name": "dart",
+        "version": "2.12.1",
+        "link": "https://dart.dev/",
+        "description": "Dart is a client-optimized programming language for apps on multiple platforms. It is developed by Google and is used to build mobile, desktop, server, and web applications. Dart is an object-oriented, class-defined, garbage-collected language with C-style syntax. Dart can compile to either native code or JavaScript.",
+        "boilerplate": "void main() {\n\t%s\n}",
+        "filename": "dart.dart"
+    },
+    {
+        "name": "typescript",
+        "version": "1.16.2",
+        "link": "https://www.typescriptlang.org/",
+        "description": "TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. Any browser. Any host. Any OS. Open source.",
+        "boilerplate": "%s",
+        "filename": "typescript.ts"
+    },
+    {
+        "name": "javascript",
+        "version": "1.16.2",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+        "description": "JavaScript is a high-level, interpreted programming language. It is a language which is also characterized as dynamic, weakly typed, prototype-based and multi-paradigm.",
+        "boilerplate": "%s",
+        "filename": "javascript.js"
+    },
+    {
+        "name": "dragon",
+        "version": "1.9.8",
+        "link": "https://dragon-lang.org/",
+        "description": "The Dragon is an innovative and practical general-purpose language. The supported programming paradigms are imperative, object-oriented, declarative using nested structures, functional and natural programming.",
+        "boilerplate": "%s",
+        "filename": "dragon.drg"
+    },
+    {
+        "name": "elixir",
+        "version": "1.11.3",
+        "link": "https://elixir-lang.org/",
+        "description": "Elixir is a dynamic, functional language designed for building scalable and maintainable applications. Elixir leverages the Erlang VM, known for running low-latency, distributed and fault-tolerant systems, while also being successfully used in web development and the embedded software domain.",
+        "boilerplate": "%s",
+        "filename": "elixir.ex"
+    },
+    {
+        "name": "c",
+        "version": "10.2.0",
+        "link": "https://en.wikipedia.org/wiki/C_(programming_language)",
+        "description": "C is a general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations. By design, C provides constructs that map efficiently to typical machine instructions.",
+        "boilerplate": "#include <stdio.h>\nint main(void) {\n%s\n}",
+        "filename": "c_hw.c"
+    },
+    {
+        "name": "cpp",
+        "version": "10.2.0",
+        "link": "https://en.wikipedia.org/wiki/C%2B%2B",
+        "description": "C++ is a general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or \"C with Classes\". The language has expanded significantly over time, and modern C++ now has object-oriented, generic, and functional features in addition to facilities for low-level memory manipulation.",
+        "boilerplate": "#include <iostream>\nint main(void) {\n%s\nreturn 0;\n}",
+        "filename": "cpp_hw.cpp"
+    },
+    {
+        "name": "fortran",
+        "version": "10.2.0",
+        "link": "https://en.wikipedia.org/wiki/Fortran",
+        "description": "Fortran is a general-purpose, imperative programming language that is especially suited to numeric computation and scientific computing.",
+        "boilerplate": "program hw\n%s\nend program hw",
+        "filename": "fortran.f"
+    },
+    {
+        "name": "go",
+        "version": "1.16.2",
+        "link": "https://golang.org/",
+        "description": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+        "boilerplate": "package main\nimport \"fmt\"\nfunc main() {\n%s\n}",
+        "filename": "go_hw.go"
+    },
+    {
+        "name": "groovy",
+        "version": "3.0.7",
+        "link": "https://groovy-lang.org/",
+        "description": "Groovy is a Java-syntax-compatible object-oriented programming language for the Java platform. It is both a static and dynamic language with features similar to those of Python, Ruby, Perl, and Smalltalk.",
+        "boilerplate": "%s",
+        "filename": "groovy_hw.groovy"
+    },
+    {
+        "name": "java",
+        "version": "15.0.2",
+        "link": "https://www.java.com/en/",
+        "description": "Java is a general-purpose, class-based, object-oriented programming language designed for having lesser implementation dependencies. It is a computing platform for application development. The Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying computer architecture.",
+        "boilerplate": "class HW {\npublic static void main(String[] args) {\n%s\n}\n}",
+        "filename": "HW.java"
+    },
+    {
+        "name": "julia",
+        "version": "1.6.1",
+        "link": "https://julialang.org/",
+        "description": "Julia is a high-level, high-performance dynamic programming language for numerical computing. It provides a sophisticated compiler, distributed parallel execution, numerical accuracy, and an extensive mathematical function library.",
+        "boilerplate": "%s",
+        "filename": "julia.jl"
+    },
+    {
+        "name": "kotlin",
+        "version": "1.4.31",
+        "link": "https://kotlinlang.org/",
+        "description": "Created by JetBrains, Kotlin is a high-level java-like language that compiles to the JVM while containing many modern paradigms.",
+        "boilerplate": "fun main() {\n%s\n}",
+        "filename": "kotlin.kt"
+    },
+    {
+        "name": "lua",
+        "version": "5.4.2",
+        "link": "https://www.lua.org/",
+        "description": "Lua is a powerful, efficient, lightweight, embeddable scripting language. It supports procedural programming, object-oriented programming, functional programming, data-driven programming, and data description.",
+        "boilerplate": "%s",
+        "filename": "lua_hw.lua"
+    },
+    {
+        "name": "nim",
+        "version": "1.4.4",
+        "link": "https://nim-lang.org/",
+        "description": "Nim is a statically typed compiled systems programming language. It combines successful concepts from mature languages like Python, Ada and Modula.",
+        "boilerplate": "%s",
+        "filename": "nim_hw.nim"
+    },
+    {
+        "name": "perl",
+        "version": "5.26.1",
+        "link": "https://www.perl.org/",
+        "description": "Perl is a family of two high-level, general-purpose, interpreted, dynamic programming languages. Perl 5 is currently the only active member of the family.",
+        "boilerplate": "%s",
+        "filename": "perl_hw.pl"
+    },
+    {
+        "name": "python3",
+        "version": "3.10.0",
+        "link": "https://www.python.org/",
+        "description": "Python is an interpreted, high-level, general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant whitespace.",
+        "boilerplate": "%s",
+        "filename": "python.py"
+    },
+    {
+        "name": "r",
+        "version": "4.1.1",
+        "link": "https://www.r-project.org/",
+        "description": "R is a programming language and software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis.",
+        "boilerplate": "%s",
+        "filename": "r_hw.r"
+    },
+    {
+        "name": "ruby",
+        "version": "3.0.1",
+        "link": "https://www.ruby-lang.org/en/",
+        "description": "Ruby is a dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.",
+        "boilerplate": "%s",
+        "filename": "ruby.rb"
+    },
+    {
+        "name": "rust",
+        "version": "1.65.0",
+        "link": "https://www.rust-lang.org/",
+        "description": "Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.",
+        "boilerplate": "fn main() {\n%s\n}",
+        "filename": "rust.rs"
+    },
+    {
+        "name": "scala",
+        "version": "3.0.0",
+        "link": "https://www.scala-lang.org/",
+        "description": "Scala is a general-purpose programming language providing support for functional programming and a strong static type system. Designed to be concise, many of Scala's design decisions aimed to address criticisms of Java.",
+        "boilerplate": "object HW extends App {\n%s\n}",
+        "filename": "HW.scala"
+    },
+    {
+        "name": "swift",
+        "version": "5.3.3",
+        "link": "https://swift.org/",
+        "description": "Swift is a general-purpose, multi-paradigm, compiled programming language developed by Apple Inc. for iOS, iPadOS, macOS, watchOS, tvOS, Linux, and z/OS.",
+        "boilerplate": "%s",
+        "filename": "swift_hw.swift"
+    }
+]

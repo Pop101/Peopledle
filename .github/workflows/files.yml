@@ -1,0 +1,22 @@
+name: "File Warnings"
+on: [push]
+
+jobs:
+  lfs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - id: file_changes
+        name: File Changes
+        uses: trilom/file-changes-action@v1.2.3
+        with:
+          prNumber: $
+          pushBefore: ""
+          pushAfter: ""
+
+      - name: "LFS"
+        uses: actionsdesk/lfs-warning@v3.1
+        with:
+          filesizelimit: 10MB

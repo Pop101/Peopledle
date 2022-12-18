@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Peopldle </title>
+
+    <link rel="stylesheet" href="static/css/reset.css" />
+    <link rel="stylesheet" href="static/css/index.css" />
+    <link rel="stylesheet" href="static/css/lightbox.css" />
+</head>
+
+<body>
+    <section id="nav" class="flex" style="align-items: baseline;">
+        <h1>Peopledle</h1>
+        <div>
+            <a href="#past-peoples">Past Peoples</a>
+            <a href="#how-to">How to Play</a>
+        </div>
+
+    </section>
+
+    <section id="main" class="flex">
+        <div style="flex: 1;">
+            <h3>Information</h3>
+            <ol id="info">
+                <li>This person took lots of cocaine</li>
+            </ol>
+        </div>
+        <div style="flex: 0.7;">
+            <br>
+            <div class="merged-input">
+                <input type="text" placeholder="Submit your guess" id="guess" />
+                <button id="submit" style="flex: 0.2;" onclick="submitGuess()">
+                    Guess
+                    <img id="spinner" class="inline" alt="spinner" src="static/img/spinner.svg">
+                </button>
+            </div>
+
+            <ul id="guesses">
+                <li> <em>Your guesses will appear here</em> </li>
+            </ul>
+        </div>
+    </section>
+    <section id="footer">
+        <p>
+            Made with
+            <img class="inline" alt="❤️" src="static/img/heart.svg">
+            by <a href="https://leibmann.org">Leon</a> and possibly <a href="______">Rich</a>
+        </p>
+    </section>
+
+    <div class="lightbox flex" id="past-peoples">
+        <a href="#" class="backdrop"></a>
+        <section class="lightbox-section">
+            <h2>Past People</h2>
+            <hr>
+            <ol class="columns">
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+                <li>a</li>
+            </ol>
+        </section>
+    </div>
+
+    <script src="static/js/index.js"></script>
+</body>
+
+</html>
