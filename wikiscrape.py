@@ -20,12 +20,16 @@ db = MongrelDB("./data")
 time_of_last_request = 0
 
 
-def get_page(url) -> str:
-    """Gets the page at the given url"""
+def ensure_request_delay():
     global time_of_last_request
 
     if time.time() - time_of_last_request < REQUEST_DELAY:
         time.sleep(REQUEST_DELAY - (time.time() - time_of_last_request))
+
+
+def get_page(url) -> str:
+    """Gets the page at the given url"""
+    ensure_request_delay()
 
     response = requests.get(url)
     time_of_last_request = time.time()
@@ -37,6 +41,7 @@ def fetch_people_list_level4() -> list[dict]:
     page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4/People")
     page = Selector(page)
 
+    # Iterate through all relevant headers and links in the page
     current_category = (None, None, None, None)
     h_a_selector = """//h2[not(contains(., "Navigation") or contains(., "Contents") or contains(.,"ext-"))] |
                       //h3[not(contains(@id, "p-"))] | //h4 | //h5 |
@@ -48,6 +53,8 @@ def fetch_people_list_level4() -> list[dict]:
             text = elem.css("::text").get()
             text = re.sub(r"\s+", " ", text)
             text = re.sub(r"\(.*\)", "", text).strip()
+
+            # Use headers to set category details
             if elem_type == "h2":
                 current_category = (text, None, None, None)
             elif elem_type == "h3":
@@ -62,8 +69,9 @@ def fetch_people_list_level4() -> list[dict]:
                     text,
                 )
             print(current_category)
+
+        # If the element is a link, store it in the db
         elif elem_type == "a":
-            # store href, text, and category in db
             person = elem.css("::text").get()
             href = elem.xpath("@href").get()
             if "Wikipedia:" in href:
@@ -78,19 +86,18 @@ def fetch_people_list_level4() -> list[dict]:
             }
 
 
-def fetch_person_text(name: str) -> str:
-    """Gets the text of the given person's page,
-    removing the bibliography and other extraneous information
+def populate_person_details(name: str) -> str:
+    """Given a person's name,
+    fetches their details off wikipedia and stores them in the db.
     """
-    global time_of_last_request
-
-    if time.time() - time_of_last_request < REQUEST_DELAY:
-        time.sleep(REQUEST_DELAY - (time.time() - time_of_last_request))
+    ensure_request_delay()
 
     page = wikipedia.page(title=name, auto_suggest=False, redirect=True)
-    time_of_last_request = time.time()
-
+    
     summary = page.summary
+    
+    # Remove references and bibliography sections from the content
+    # Also remove all headers
     content = page.content
     if "== References ==" in content:
         content = content[: content.find("== References ==")]
@@ -99,7 +106,8 @@ def fetch_person_text(name: str) -> str:
     content = re.sub(r"=+\s+.*?\s+=+", "", content)
     content = re.sub(r"\s+", " ", content.replace("\n", " "))
 
-    # Parse out sentences that contain the person's name
+    # Get all sentences that contain the person's name
+    # (this is used to generate the questions later)
     sentences_with_name = set()
     for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + " " + content):
         for name_part in name.split():
@@ -108,11 +116,13 @@ def fetch_person_text(name: str) -> str:
                 break
 
     # Get the page image, if it exists
+    # This takes an extra web request
     img = "/static/img/question.svg"
     parsel = Selector(get_page(page.url))  # very slow, but necessary to get the correct image
     if html_img := parsel.xpath('//tbody/tr/td[contains(@class, "photo") or contains(@class, "infobox-image")]/a/img'):
         img = html_img.xpath("./@src").get()
 
+    # Dump anything we've found into the db
     db_name = re.sub(r"[.\\]", "", name)
     db[db_name] = {
         **db[db_name],
@@ -127,4 +137,4 @@ if __name__ == "__main__":
     fetch_people_list_level4()
     for name in db:
         print(f"Fetching {name}...")
-        fetch_person_text(db[name]["name"])
+        populate_person_details(db[name]["name"])

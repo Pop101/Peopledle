@@ -1,12 +1,7 @@
-from functools import wraps
 from flask import Flask, render_template, request
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
-from json import load
 from random import choice
-import requests
-from re import sub, search, finditer, IGNORECASE
-from time import time
 from modules.mongrel_db import MongrelDB
 from anyascii import anyascii
 
@@ -31,6 +26,10 @@ def post():
 
 @app.route("/names", methods=["GET"])
 def get_valid_people() -> list[str]:
+    """Returns a list of all people in the database.
+    Simplifies all unicode characters to ASCII.
+    """
+
     people = list()
     for person in db:
         people.append(anyascii(db[person]["name"]))
@@ -38,8 +37,19 @@ def get_valid_people() -> list[str]:
 
 
 def pick_person():
+    """Pick a random person from the database,
+    populating the global variable `person` with their data.
+
+    This function is called on startup and every day at local midnight.
+
+    Returns:
+        _type_: _description_
+    """
     global person
 
+    # Subfunction to pick a single person
+    # Returns JSPON object with that person's data
+    #    or False if that person was invalid
     def single_pick():
         full_data = db[choice(list(db))]
 
@@ -78,11 +88,13 @@ if __name__ == "__main__":
     apsched.start()
     apsched.add_job(pick_person, "cron", day="*", hour="0")
 
+    # Quick endpoint integrity test
     with app.test_client() as c:
         rv = c.post("/submit", json=data)
         pass
 
+    # Start the server
     print("Starting server on port 8787")
     print(person)
-    # serve(app, host="0.0.0.0", port=8787)
+    # USE WAITRESS IN PRODUCTION: serve(app, host="0.0.0.0", port=8787)
     app.run(debug=True)
