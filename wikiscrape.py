@@ -109,9 +109,9 @@ def fetch_person_text(name: str) -> str:
 
     # Get the page image, if it exists
     img = "/static/img/question.svg"
-    parsel = Selector(page.html())  # very slow, but necessary to get the correct image
-    if html_img := parsel.xpath('//tbody/tr/td[contains(@class, "photo")]/a'):
-        img = html_img.xpath("./@href").get()
+    parsel = Selector(get_page(page.url))  # very slow, but necessary to get the correct image
+    if html_img := parsel.xpath('//tbody/tr/td[contains(@class, "photo") or contains(@class, "infobox-image")]/a/img'):
+        img = html_img.xpath("./@src").get()
 
     db_name = re.sub(r"[.\\]", "", name)
     db[db_name] = {
