@@ -39,7 +39,7 @@ function submitGuess() {
 
     window.post(
         '/',
-        { code: "greg" }
+        { guesses: guesses, guess: guess }
     ).then(resp => resp.json()).then(data => {
         guesses++;
 
