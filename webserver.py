@@ -15,7 +15,7 @@ person = dict()
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", language=language["name"].title())
+    return render_template("index.html")
 
 
 @app.route("/", methods=["POST"])

@@ -1,6 +1,27 @@
 window.post = function (url, data) {
     return fetch(url, { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
 }
+window.get = function (url) {
+    return fetch(url, { method: "GET" });
+}
+
+// Load in the HUGE datalist of names asynchonously
+document.addEventListener('DOMContentLoaded', (event) => {
+    window.get('/names').then(resp => resp.json()).then(data => {
+        const list = document.getElementById("names");
+        const fragment = document.createDocumentFragment();
+        data.forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            fragment.appendChild(option);
+        });
+        list.removeChild(list.firstChild);
+        list.appendChild(fragment);
+    }).catch(err => {
+        console.error(err);
+        alert("Error: No connection to server");
+    });
+})
 
 let lock = false;
 let guesses = 0;

@@ -11,6 +11,10 @@
 </head>
 
 <body>
+    <datalist id="names">
+        <option value="Not loaded">
+    </datalist>
+
     <section id="nav" class="flex" style="align-items: baseline;">
         <h1>Peopledle</h1>
         <div>
@@ -30,7 +34,7 @@
         <div style="flex: 0.7;">
             <br>
             <div class="merged-input">
-                <input type="text" placeholder="Submit your guess" id="guess" />
+                <input type="text" placeholder="Submit your guess" id="guess" list="names" />
                 <button id="submit" style="flex: 0.2;" onclick="submitGuess()">
                     Guess
                     <img id="spinner" class="inline" alt="spinner" src="static/img/spinner.svg">
