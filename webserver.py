@@ -15,6 +15,7 @@ MAX_GUESSES = 5
 app = Flask(__name__)
 db = MongrelDB("./data")
 data = {"response": "OK", "guess": 2, "result": {"solved": False, "next_hint": "This is a hint"}}
+person = dict()
 
 
 @app.route("/", methods=["GET"])
@@ -45,18 +46,18 @@ def pick_person():
         person = {
             "name": full_data["name"],
             "summary": full_data["summary"],
-            "hints": list(filter(lambda x: bool(x), full_data["category"])),
+            "hints": list(filter(lambda x: bool(x), full_data["categories"])),
             "guesses": list(),
         }
 
         # Split sentences list into equal parts
         # Choose a sentence from each part
-        summary = person["summary"]
+        summary = full_data["sentences"]
         summary = list(filter(lambda x: len(x) < 400, summary))
         if len(summary) < MAX_GUESSES:
             return False
 
-        chunk_size = len(person["summary"]) // MAX_GUESSES
+        chunk_size = len(summary) // MAX_GUESSES
         for i in range(MAX_GUESSES):
             person["guesses"].insert(0, choice(summary[i * chunk_size : (i + 1) * chunk_size]))
 
@@ -82,6 +83,6 @@ if __name__ == "__main__":
         pass
 
     print("Starting server on port 8787")
-    print(language)
+    print(person)
     # serve(app, host="0.0.0.0", port=8787)
     app.run(debug=True)
