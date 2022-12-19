@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             option.value = name;
             fragment.appendChild(option);
         });
-        list.removeChild(list.firstChild);
+        while (list.firstChild) list.removeChild(list.firstChild);
         list.appendChild(fragment);
     }).catch(err => {
         console.error(err);
