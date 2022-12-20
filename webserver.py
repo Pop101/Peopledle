@@ -51,7 +51,10 @@ def pick_person():
     # Returns JSON object with that person's data
     #    or False if that person was invalid
     def single_pick():
-        full_data = db[choice(list(db))]
+        # Testing code to hard-code a choice
+        full_data = db['A C Bhaktivedanta Swami Prabhupada']
+
+        # full_data = db[choice(list(db))]
 
         person = {
             "name": full_data["name"],

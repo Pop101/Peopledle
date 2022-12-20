@@ -108,11 +108,27 @@ def populate_person_details(name: str) -> str:
 
     # Get all sentences that contain the person's name
     # (this is used to generate the questions later)
-    sentences_with_name = set()
+    sentences_with_name = list()
     for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + " " + content):
-        for name_part in name.split():
+        name_part_list = name.split()
+        for name_part in name_part_list:
             if len(name_part) >= 3 and name_part in sentence:
-                sentences_with_name.add(sentence)
+
+                # Clean up the sentence
+                # 1. Remove everything inside parentheses, including the parentheses
+                sentence = re.sub(r'\([^)]*\)', '', sentence)
+
+                # 2. Remove everything past a comma, including the comma
+                # sentence = re.sub(r',.*', '', sentence)
+
+                # 3. Split name into Name-Components, 1 through ??? (probably no more than 5)
+                # 4. Redact each of these per sentence by replacing it with [NAME COMPONENT X] where X is the number of the component.
+                for name_number, name_part in enumerate(name_part_list):
+                    if len(name_part) < 3:
+                        continue
+                    sentence = re.sub(name_part,'[NAME COMPONENT ' + str(name_number + 1) + ']',sentence)
+
+                sentences_with_name.append(sentence)
                 break
 
     # Get the page image, if it exists
@@ -129,7 +145,7 @@ def populate_person_details(name: str) -> str:
         "img": img,
         "summary": summary,
         "content": content,
-        "sentences": list(sentences_with_name),
+        "sentences": sentences_with_name,
     }
 
 
