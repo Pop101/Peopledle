@@ -21,7 +21,7 @@ def index():
 @app.route("/", methods=["POST"])
 def post():
     print("GOT GUESS", request.json)
-    return data
+    return {"response": "OK", "result": {"next_hint": person["guesses"][request.json["guesses"]]}}
 
 
 @app.route("/names", methods=["GET"])
