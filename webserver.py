@@ -48,7 +48,7 @@ def pick_person():
     global person
 
     # Subfunction to pick a single person
-    # Returns JSPON object with that person's data
+    # Returns JSON object with that person's data
     #    or False if that person was invalid
     def single_pick():
         full_data = db[choice(list(db))]
