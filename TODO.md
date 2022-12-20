@@ -1,2 +1,4 @@
+\### Project status
+
 - [] Fix parser to parse Level 3 articles as well - it's only parsing Level 4 - Level 3
 - [] Redaction algorithm 
