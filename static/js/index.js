@@ -23,28 +23,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 })
 
-//load initial information about the person to be guessed
-document.addEventListener("DOMContentLoaded", (event) => {
-    window.post(
-        '/',
-        { guesses: guesses, guess: guess }
-    ).then(resp => resp.json()).then(data => {
-        guesses++;
-
-        // Ignore empty hints (i.e. you've guessed too many times)
-        if (data.result.next_hint.length >= 0)
-            appendToList("info", data.result.next_hint);
-    }).catch(err => {
-        console.error(err);
-        alert("Error: No connection to server");
-    }).finally(() => {
-        lock = false;
-        spinner.style.opacity = "0";
-    });
-})
-
 let lock = false;
-let guesses = 0;
+let guesses = 1;
 
 function submitGuess() {
     if (lock) return;
