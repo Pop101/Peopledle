@@ -158,7 +158,8 @@ def populate_person_details(name: str) -> str:
                 for name_number, name_part in enumerate(name_part_list):
                     if len(name_part) < 3:
                         continue
-                    sentence = re.sub(name_part,'[NAME COMPONENT ' + str(name_number + 1) + ']',sentence)
+                    #sentence = re.sub(name_part,'[NAME COMPONENT ' + str(name_number + 1) + ']',sentence)
+                    sentence = re.sub(name_part, '█'*len(name_part), sentence)
 
                 sentences_with_name.append(sentence)
                 break
