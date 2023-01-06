@@ -11,7 +11,7 @@ choice = lambda x, i: x[hash(i) % len(x)] # Deterministic choice
 MAX_GUESSES = 5
 app = Flask(__name__)
 db = MongrelDB("./data")
-current_day = 1
+current_day = 0
 person = dict()
 
 @app.route("/", methods=["GET"])
@@ -24,7 +24,7 @@ def post():
 
 @app.route("/<int:day>", methods=["GET"])
 def past_people(day:int = 0):
-    if day > current_day:
+    if not (0 < day <= current_day):
         abort(404)
         
     person = get_person(day)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         pass
     increment_person()
-
+    
     apsched = BackgroundScheduler()
     apsched.start()
     apsched.add_job(increment_person, "cron", day="*", hour="0")
