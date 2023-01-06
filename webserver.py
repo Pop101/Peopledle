@@ -28,7 +28,7 @@ def past_people(day:int = 0):
         abort(404)
         
     person = get_person(day)
-    return render_template("index.html", info=person)
+    return render_template("index.html", info=person, current_day=current_day)
 
 @app.route("/<int:day>", methods=["POST"])
 def post_guess(day:int = 0):

@@ -61,28 +61,11 @@
             <h2>Past People</h2>
             <hr>
             <ol class="columns">
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
-                <li>a</li>
+                {% for i in range(current_day) %}
+                <li>
+                    <a href="/{{ i }}">Puzzle {{ i + 1 }}</a>
+                </li>
+                {% endfor %}
             </ol>
         </section>
     </div>
