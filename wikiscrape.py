@@ -36,7 +36,40 @@ def get_page(url) -> str:
     response.raise_for_status()
     return response.text
 
+def fetch_people_list_level3() -> list[dict]:
+    page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles")
+    page = Selector(page)
+    
+    current_category = (None, None, None, None)
+    people_div = page.xpath('//*[@id="mw-content-text"]/div[1]/div[4]/div/h2[2]/following-sibling::*[1]')[0]
+    h_a_selector = """.//h3 | .//a[not(@class="image")]"""
+    
+    for elem in people_div.xpath(h_a_selector):
+        print(elem)
+        elem_type = elem.xpath("name()").get()
+        if re.match(r"h\d", elem_type):
+            # header
+            text = elem.css("::text").get()
+            text = re.sub(r"\s+", " ", text)
+            text = re.sub(r"\(.*\)", "", text).strip()
+            
+            current_category = [text, None, None, None]
+        elif elem_type == "a":\
+            # Link
+            person = elem.css("::text").get()
+            href = elem.xpath("@href").get()
+            if "Wikipedia:" in href:
+                continue
 
+            print(person)
+            db[re.sub(r"[.\\]", "", person)] = {
+                "name": person,
+                "url": f"https://en.wikipedia.org{href}",
+                "categories": current_category,
+                "difficulty": 3,
+            }
+            
+    
 def fetch_people_list_level4() -> list[dict]:
     page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4/People")
     page = Selector(page)
@@ -150,7 +183,8 @@ def populate_person_details(name: str) -> str:
 
 
 if __name__ == "__main__":
-    fetch_people_list_level4()
+    # fetch_people_list_level4()
+    fetch_people_list_level3()
     for name in db:
         print(f"Fetching {name}...")
         populate_person_details(db[name]["name"])
