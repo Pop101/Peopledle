@@ -12,7 +12,6 @@ MAX_GUESSES = 5
 app = Flask(__name__)
 db = MongrelDB("./data")
 current_day = 0
-person = dict()
 
 @app.route("/", methods=["GET"])
 def index():
