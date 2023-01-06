@@ -57,7 +57,7 @@ function submitGuess() {
 
 const appendGuess = (guess) => {
     const list = document.getElementById("guesses");
-    if (guesses == 0) list.innerHTML = "";
+    if (guesses == 1) list.innerHTML = "";
     appendToList("guesses", guess);
 }
 
