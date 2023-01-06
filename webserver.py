@@ -12,6 +12,7 @@ MAX_GUESSES = 5
 app = Flask(__name__)
 db = MongrelDB("./data")
 current_day = 1
+person = dict()
 
 @app.route("/", methods=["GET"])
 def index():
@@ -21,7 +22,6 @@ def index():
 
 @app.route("/", methods=["POST"])
 def post():
-    print("GOT GUESS", request.json)
     person = get_person(current_day)
     return {"response": "OK", "result": {"next_hint": person["guesses"][request.json["guesses"]]}}
 
@@ -49,7 +49,26 @@ def increment_person():
 
 def get_person(day:int):
     person_name = list(db)[hash(day) % len(db)]
-    return db[person_name]
+    full_data = db[person_name]
+    person = {
+        "name": full_data["name"],
+        "summary": full_data["summary"],
+        "hints": list(filter(lambda x: bool(x), full_data["categories"])),
+        "guesses": list(),
+    }
+
+    # Split sentences list into equal parts
+    # Choose a sentence from each part
+    summary = full_data["sentences"]
+    summary = list(filter(lambda x: len(x) < 400, summary))
+    if len(summary) < MAX_GUESSES:
+        return False
+
+    chunk_size = len(summary) // MAX_GUESSES
+    for i in range(MAX_GUESSES):
+        person["guesses"].insert(0, choice(summary[i * chunk_size : (i + 1) * chunk_size]))
+    
+    return person
 
 if __name__ == "__main__":
     # Try to load current day from file
