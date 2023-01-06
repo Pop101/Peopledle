@@ -38,7 +38,7 @@ function submitGuess() {
     lock = true;
 
     window.post(
-        '/',
+        window.location.pathname,
         { guesses: guesses, guess: guess }
     ).then(resp => resp.json()).then(data => {
         guesses++;

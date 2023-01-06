@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
@@ -16,13 +16,23 @@ person = dict()
 
 @app.route("/", methods=["GET"])
 def index():
-    person = get_person(current_day)
-    return render_template("index.html", info=person)
-
+    return past_people(current_day)
 
 @app.route("/", methods=["POST"])
 def post():
-    person = get_person(current_day)
+    return post_guess(current_day)
+
+@app.route("/<int:day>", methods=["GET"])
+def past_people(day:int = 0):
+    if day > current_day:
+        abort(404)
+        
+    person = get_person(day)
+    return render_template("index.html", info=person)
+
+@app.route("/<int:day>", methods=["POST"])
+def post_guess(day:int = 0):
+    person = get_person(day)
     return {"response": "OK", "result": {"next_hint": person["guesses"][request.json["guesses"]]}}
 
 
