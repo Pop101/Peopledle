@@ -33,7 +33,16 @@ def past_people(day:int = 0):
 @app.route("/<int:day>", methods=["POST"])
 def post_guess(day:int = 0):
     person = get_person(day)
-    return {"response": "OK", "result": {"next_hint": person["guesses"][request.json["guesses"]]}}
+    
+    guess_correct = request.json["guess"].lower() == person["name"].lower() or anyascii(request.json["guess"].lower()) == anyascii(person["name"].lower())
+    hint = '' if guess_correct or request.json["guesses"] > len(person["guesses"]) else person["guesses"][request.json["guesses"]]
+    return {
+        "response": "OK",
+        "result": {
+            "next_hint": hint,
+            "correct": guess_correct
+        }
+    }
 
 
 @app.route("/names", methods=["GET"])

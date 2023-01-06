@@ -43,9 +43,17 @@ function submitGuess() {
     ).then(resp => resp.json()).then(data => {
         guesses++;
 
-        // Ignore empty hints (i.e. you've guessed too many times)
-        if (data.result.next_hint.length >= 0)
-            appendToList("info", data.result.next_hint);
+        // If you've guessed correctly, show the lightbox
+        if (data.result.correct) {
+            showLightbox("correct");
+        } else {
+            // Otherwise, show the next hint
+            if (data.result.next_hint.length >= 0)
+                appendToList("info", data.result.next_hint);
+
+            //... and clear the guess box
+            document.getElementById("guess").value = "";
+        }
     }).catch(err => {
         console.error(err);
         alert("Error: No connection to server");
