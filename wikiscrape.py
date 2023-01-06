@@ -45,7 +45,6 @@ def fetch_people_list_level3() -> list[dict]:
     h_a_selector = """.//h3 | .//a[not(@class="image")]"""
     
     for elem in people_div.xpath(h_a_selector):
-        print(elem)
         elem_type = elem.xpath("name()").get()
         if re.match(r"h\d", elem_type):
             # header
@@ -54,7 +53,7 @@ def fetch_people_list_level3() -> list[dict]:
             text = re.sub(r"\(.*\)", "", text).strip()
             
             current_category = [text, None, None, None]
-        elif elem_type == "a":\
+        elif elem_type == "a":
             # Link
             person = elem.css("::text").get()
             href = elem.xpath("@href").get()
