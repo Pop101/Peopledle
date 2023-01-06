@@ -127,21 +127,25 @@ def populate_person_details(name: str) -> str:
     page = wikipedia.page(title=name, auto_suggest=False, redirect=True)
     
     summary = page.summary
-    
-    # Remove references and bibliography sections from the content
-    # Also remove all headers
     content = page.content
-    if "== References ==" in content:
-        content = content[: content.find("== References ==")]
-    if "== Bibliography ==" in content:
-        content = content[: content.find("== Bibliography ==")]
+    
+    # Remove references and bibliography sections from the content        
+    content = re.sub(r'==.*bibliography(.|\s)*', "", content, flags=re.IGNORECASE)
+    content = re.sub(r'==.*References(.|\s)*', "", content, flags=re.IGNORECASE)
+    content = re.sub(r'==.*See also(.|\s)*', "", content, flags=re.IGNORECASE)
+    content = re.sub(r'==.*Further reading(.|\s)*', "", content, flags=re.IGNORECASE)
+    content = re.sub(r'==.*External links(.|\s)*', "", content, flags=re.IGNORECASE)
+    content = re.sub(r'== Notes ==(.|\s)*', "", content, flags=re.IGNORECASE)
+        
+    # Remove all other headers
     content = re.sub(r"=+\s+.*?\s+=+", "", content)
-    content = re.sub(r"\s+", " ", content.replace("\n", " "))
+    content = re.sub(r"\s+", " ", content.replace("\n", ". "))
+    content = re.sub(r"\.(?=[A-Z])", ". ", content) # Add weirdly missing spaces back
 
     # Get all sentences that contain the person's name
     # (this is used to generate the questions later)
     sentences_with_name = list()
-    for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + " " + content):
+    for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + ". " + content):
         name_part_list = name.split()
         for name_part in name_part_list:
             if len(name_part) >= 3 and name_part in sentence:
