@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
-from random import choice
 from modules.mongrel_db import MongrelDB
 from anyascii import anyascii
 import hashlib
 
 hash = lambda x: int(hashlib.sha256(repr(x).encode("utf-8")).hexdigest(), 16) # Deterministic hash
+choice = lambda x, i: x[hash(i) % len(x)] # Deterministic choice
 
 MAX_GUESSES = 5
 app = Flask(__name__)
@@ -66,7 +66,7 @@ def get_person(day:int):
 
     chunk_size = len(summary) // MAX_GUESSES
     for i in range(MAX_GUESSES):
-        person["guesses"].insert(0, choice(summary[i * chunk_size : (i + 1) * chunk_size]))
+        person["guesses"].insert(0, choice(summary[i * chunk_size : (i + 1) * chunk_size], i))
     
     return person
 
