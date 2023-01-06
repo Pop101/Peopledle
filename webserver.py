@@ -63,10 +63,18 @@ def get_person(day:int):
     summary = list(filter(lambda x: len(x) < 400, summary))
     if len(summary) < MAX_GUESSES:
         return False
-
-    chunk_size = len(summary) // MAX_GUESSES
-    for i in range(MAX_GUESSES):
-        person["guesses"].insert(0, choice(summary[i * chunk_size : (i + 1) * chunk_size], i))
+    
+    # Repeat so a player that "lost" can keep playing
+    while len(summary) > MAX_GUESSES:
+        # Pick a guess from each chunk
+        chunk_size = len(summary) // MAX_GUESSES
+        for i in range(MAX_GUESSES):
+            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size], i)
+            person["guesses"].insert(0, guess)
+        
+        # Remove those guesses from the summary
+        for guess in summary:
+            summary.remove(guess)
     
     return person
 
