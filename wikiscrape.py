@@ -45,7 +45,7 @@ def fetch_people_list_level4() -> list[dict]:
     current_category = (None, None, None, None)
     h_a_selector = """//h2[not(contains(., "Navigation") or contains(., "Contents") or contains(.,"ext-"))] |
                       //h3[not(contains(@id, "p-"))] | //h4 | //h5 |
-                      //div[@class="div-col"]//ol/li/a[not(@class="image")]"""
+                      //div[@class="div-col"]//ol//a[not(@class="image")]"""
 
     for elem in page.xpath(h_a_selector):
         elem_type = elem.xpath("name()").get()
