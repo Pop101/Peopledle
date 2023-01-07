@@ -1,6 +1,5 @@
 import sys
 from collections import OrderedDict
-from typing import Self
 
 
 # Cache annotation and cache object that uses a dict to map inputs to outputs
@@ -26,7 +25,7 @@ class FixedSizeDict:
     def clear(self) -> None:
         self.dict.clear()
 
-    def copy(self) -> Self:
+    def copy(self) -> "FixedSizeDict":
         return FixedSizeDict(self.size_limit, **self.dict)
 
     def update_size_limit(self, size_limit: int):

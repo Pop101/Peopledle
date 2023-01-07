@@ -12,8 +12,10 @@ def get_average(day:int):
     conn = __ensure_db_exists()
     c = conn.cursor()
     c.execute("SELECT AVG(guesses) FROM guesses WHERE day=?", (day,))
-    if not (avg := c.fetchone()[0]):
-        avg = 0
+    
+    avg = c.fetchone()[0]
+    if not avg: avg = 0
+    
     conn.close()
     return avg
 

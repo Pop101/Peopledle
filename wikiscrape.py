@@ -172,7 +172,9 @@ def populate_person_details(name: str) -> str:
     # This takes an extra web request
     img = "/static/img/question.svg"
     parsel = Selector(get_page(page.url))  # very slow, but necessary to get the correct image
-    if html_img := parsel.xpath('//tbody/tr/td[contains(@class, "photo") or contains(@class, "infobox-image")]/a/img'):
+    
+    html_img = parsel.xpath('//tbody/tr/td[contains(@class, "photo") or contains(@class, "infobox-image")]/a/img')
+    if html_img:
         img = html_img.xpath("./@src").get()
 
     # Dump anything we've found into the db
