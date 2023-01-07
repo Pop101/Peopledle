@@ -20,3 +20,5 @@
 - [ ] Make deployments customizable
 - [ ] Move day.txt to a database
 - [ ] Replace the overlays on win and loss
+- [ ] Make GitHub page public
+  - [ ] Remove leftover Codel images
