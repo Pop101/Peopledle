@@ -5,23 +5,24 @@ body {
     display: flex;
     flex-direction: column;
 
-    
+
     padding: 2vmax;
     height: calc(100% - 4vmax);
 
     background: white;
-    border: 1px solid slategray; /* or 2e6ac4 */
+    border: 1px solid slategray;
+    /* or 2e6ac4 */
 }
 
 html {
     background: #f6f6f6;
-    background-image: linear-gradient(to bottom,#f6f6f6 50%,#e9e9e9 100%);
+    background-image: linear-gradient(to bottom, #f6f6f6 50%, #e9e9e9 100%);
     height: 100vh;
 }
 
 
 h1, h2, h3, h4 {
-    font-family: 'Linux Libertine','Georgia','Times', serif;
+    font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
     line-height: 1.4;
     font-weight: normal;
     margin: 0;
@@ -31,16 +32,23 @@ h1, h2 {
     font-size: xx-large;
 }
 
-button {
+button,
+.btn {
     cursor: pointer;
-    background: #ccc;
+    background: #e0e0e0;
     transition: background 0.2s;
-}
-button:hover {
-    background: #ddd;
+    padding: 0.2ch 1ch;
+    border: 0.1rem solid;
+    border-radius: 5px;
 }
 
-#nav, hr {
+button:hover,
+.btn:hover {
+    filter: brightness(105%) saturate(60%);
+}
+
+#nav,
+hr {
     border: 0;
     border-bottom: 1px solid #ccc;
     margin: 0;
@@ -58,14 +66,15 @@ ul {
 
 a {
     text-decoration: none;
-    color: #0645ad; /* or #0645ad */
+    color: #0645ad;
+    /* or #0645ad */
 }
 
 #nav a {
     padding: 0.5em;
 }
 
-a:hover {
+a:hover:not(.btn) {
     filter: brightness(1.5);
     /*text-decoration: underline;*/
 }
@@ -76,7 +85,7 @@ a:hover {
     align-items: center;
 }
 
-.flex > * {
+.flex>* {
     margin: 0 1vmax;
     min-height: 100%;
 }
@@ -122,13 +131,14 @@ a:hover {
     border-color: #aaa;
 }
 
-.merged-input:focus-within{
+.merged-input:focus-within {
     border-color: #0645ad;
     box-shadow: inset 0 0 0 1px #3366cc;
 }
 
-.merged-input > * {
+.merged-input>* {
     border: 0;
+    border-radius: 0;
     flex: 1;
     padding: 0 0.6em;
 }
