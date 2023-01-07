@@ -27,11 +27,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 })
 
 let lock = false;
-let won = false;
+let game_over = false;
+let out_of_guesses = false;
 let guesses = 1;
 
 function submitGuess() {
-    if (lock || won) return;
+    if (lock || game_over) return;
 
     const guess = document.getElementById("guess").value;
     if (guess.length === 0) return;
@@ -50,15 +51,18 @@ function submitGuess() {
         // If you've guessed correctly, show the lightbox
         if (data.result.correct) {
             showLightbox("correct");
-            won = true;
+            game_over = true;
 
-            document.getElementById("confetti").style.display = "block";
-            setTimeout(() => document.getElementById("confetti").style.opacity = "1", 100);
+            showoverlay("confetti");
 
         } else {
             // Otherwise, show the next hint
-            if (data.result.next_hint.length >= 0)
+            if (data.result.next_hint.length > 0)
                 appendToList("info", data.result.next_hint);
+            else {
+                if (!out_of_guesses) appendToList("info", "We're out of hints!");
+                out_of_guesses = true;
+            }
 
             //... and clear the guess box
             document.getElementById("guess").value = "";
@@ -72,6 +76,12 @@ function submitGuess() {
     });
 }
 
+function concede() {
+    showLightbox("answer");
+    showoverlay("lossoverlay");
+    game_over = true;
+    document.getElementById("guess").value = answer;
+}
 const appendGuess = (guess) => {
     const list = document.getElementById("guesses");
     if (guesses == 1) list.innerHTML = "";
@@ -87,4 +97,9 @@ const appendToList = (id, text) => {
 
 const showLightbox = (id) => {
     window.location.replace(`#${id}`);
+}
+
+const showoverlay = (id) => {
+    document.getElementById(id).style.display = "block";
+    setTimeout(() => document.getElementById(id).style.opacity = "1", 100);
 }

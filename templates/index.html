@@ -17,6 +17,7 @@
     </datalist>
 
     <canvas id="confetti"></canvas>
+    <div id="lossoverlay"></div>
 
     <section id="nav" class="flex" style="align-items: baseline;">
         <h1>Peopledle</h1>
@@ -105,12 +106,17 @@
     </div>
     <div class="lightbox flex" id="correct">
         <a href="#" class="backdrop"></a>
-        <section class="lightbox-section small">
+        <section class="lightbox-section">
             <h2>You Win!!!</h2>
             <hr> <br>
-            <p>
-                You Got Good
-            </p>
+            <h2>
+                {{ info['name'] }}
+            </h2>
+            <div class="flex" style="align-items: flex-start;">
+                <p>{{ info['summary'] }}</p>
+                <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
+            </div>
+
         </section>
     </div>
     <div class="lightbox flex" id="lose">
@@ -119,14 +125,33 @@
             <h2>You Lose</h2>
             <hr> <br>
             <p>
-                See <a href="#how-to">step 1</a>
+                You ran out of guesses.
             </p>
+            <br>
+            <div class="flex">
+                <button class="btn" onclick="concede()">Show me the answer</button>
+                <a href="#" class="btn">Keep Going!</a>
+            </div>
+        </section>
+    </div>
+    <div class="lightbox flex" id="answer">
+        <a href="#" class="backdrop"></a>
+        <section class="lightbox-section">
+            <h2>{{ info['name'] }}</h2>
+            <hr> <br>
+            <div class="flex" style="align-items: flex-start;">
+                <p>{{ info['summary'] }}</p>
+                <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
+            </div>
         </section>
     </div>
 
     <script src="https://unpkg.com/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
     <script src="static/js/confetti.js"></script>
     <script src="static/js/index.js"></script>
+    <script>
+        const answer = "{{ info['name'] }}";
+    </script>
 </body>
 
 </html>

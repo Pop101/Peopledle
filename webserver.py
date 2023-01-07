@@ -42,7 +42,7 @@ def post_guess(day:int = 0):
     person = get_person(day)
     
     guess_correct = request.json["guess"].lower() == person["name"].lower() or anyascii(request.json["guess"].lower()) == anyascii(person["name"].lower())
-    hint = '' if guess_correct or request.json["guesses"] > len(person["guesses"]) else person["guesses"][request.json["guesses"]]
+    hint = '' if guess_correct or request.json["guesses"] >= len(person["guesses"]) else person["guesses"][request.json["guesses"]]
     metrics.record_guess(calc_uid(), day, request.json["guesses"], guess_correct)
     return {
         "response": "OK",
@@ -91,6 +91,7 @@ def get_person(day:int):
     person = {
         "name": full_data["name"],
         "summary": full_data["summary"],
+        "img": full_data["img"],
         "hints": list(filter(lambda x: bool(x), full_data["categories"])),
         "guesses": list(),
     }
