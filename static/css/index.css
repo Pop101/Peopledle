@@ -177,6 +177,10 @@ a:hover:not(.btn) {
     padding: 0 0.6em;
 }
 
+.glide__slide {
+    padding: 0 3ch;
+}
+
 .glide__arrow {
     position: absolute;
     display: block;
