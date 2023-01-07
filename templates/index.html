@@ -69,7 +69,11 @@
             <ol class="columns">
                 {% for i in range(1, current_day + 1) %}
                 <li>
-                    <a href="/{{ i }}">Puzzle {{ i }} (Avg. {{ get_avg(i) }})</a>
+                    <a href="/{{ i }}">Puzzle {{ i }}
+                        {% if get_avg(i) != '0' %}
+                        (Avg. {{ get_avg(i) }})
+                        {% endif %}
+                    </a>
                 </li>
                 {% endfor %}
             </ol>
