@@ -71,6 +71,11 @@ a {
     /* or #0645ad */
 }
 
+p {
+    padding: 1vmax;
+    text-align: left;
+}
+
 #nav a {
     padding: 0.5em;
 }
@@ -121,6 +126,10 @@ a:hover:not(.btn) {
 .flex>* {
     margin: 0 1vmax;
     min-height: 100%;
+}
+
+.f-start {
+    align-items: flex-start;
 }
 
 .wrap {
