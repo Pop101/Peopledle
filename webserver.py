@@ -66,8 +66,8 @@ def get_valid_people() -> list:
     return people
 
 def calc_uid(): # not uuid
-    if request.headers.get('HTTP_X_FORWARDED_FOR', None):
-        ip = request.headers.get('HTTP_X_FORWARDED_FOR', None)
+    if request.headers.get('X-Real-Ip', None):
+        ip = request.headers.get('X-Real-Ip', None)
     else:
         ip = request.environ['REMOTE_ADDR']
     
