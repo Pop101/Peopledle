@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="static/css/reset.css" />
     <link rel="stylesheet" href="static/css/index.css" />
     <link rel="stylesheet" href="static/css/lightbox.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@glidejs/glide@3.6.0/dist/css/glide.core.min.css" />
 </head>
 
 <body>
@@ -79,9 +80,21 @@
         <section class="lightbox-section small">
             <h2>How to Play</h2>
             <hr> <br>
-            <p>
-                Step 1. Get Good
-            </p>
+            <div class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">0</li>
+                        <li class="glide__slide">1</li>
+                        <li class="glide__slide">2</li>
+                    </ul>
+                </div>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">❮</button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">❯</button>
+                </div>
+            </div>
+            <a href="#" class="btn">Go!</a>
+
         </section>
     </div>
     <div class="lightbox flex" id="correct">
@@ -105,6 +118,7 @@
         </section>
     </div>
 
+    <script src="https://unpkg.com/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
     <script src="static/js/index.js"></script>
 </body>
 

@@ -36,6 +36,7 @@ button,
 .btn {
     cursor: pointer;
     background: #e0e0e0;
+    color: black;
     transition: background 0.2s;
     padding: 0.2ch 1ch;
     border: 0.1rem solid;
@@ -141,6 +142,33 @@ a:hover:not(.btn) {
     border-radius: 0;
     flex: 1;
     padding: 0 0.6em;
+}
+
+.glide__arrow {
+    position: absolute;
+    display: block;
+    top: 50%;
+    z-index: 2;
+    color: black;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    background-color: transparent;
+    border: 0px solid transparent;
+    border-radius: 4px;
+    text-shadow: 0 .25em .5em rgba(0,0,0,.1);
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity 150ms ease,border 300ms ease-in-out;
+    transform: translateY(-50%);
+    line-height: 1;
+}
+
+.glide__arrow--left {
+    left: 0;
+}
+
+.glide__arrow--right {
+    right: 0;
 }
 
 @media screen and (max-width: 600px) {
