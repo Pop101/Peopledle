@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, abort
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
+from modules import metrics
 from anyascii import anyascii
+from time import time
 import hashlib
 
 hash = lambda x: int(hashlib.sha256(repr(x).encode("utf-8")).hexdigest(), 16) # Deterministic hash
@@ -27,7 +29,13 @@ def past_people(day:int = 0):
         abort(404)
         
     person = get_person(day)
-    return render_template("index.html", info=person, current_day=current_day)
+    return render_template(
+        "index.html",
+        info = person,
+        current_day = current_day,
+        get_avg = lambda x: str(round(metrics.get_average(x), 2)),
+    )
+                
 
 @app.route("/<int:day>", methods=["POST"])
 def post_guess(day:int = 0):
@@ -35,6 +43,7 @@ def post_guess(day:int = 0):
     
     guess_correct = request.json["guess"].lower() == person["name"].lower() or anyascii(request.json["guess"].lower()) == anyascii(person["name"].lower())
     hint = '' if guess_correct or request.json["guesses"] > len(person["guesses"]) else person["guesses"][request.json["guesses"]]
+    metrics.record_guess(calc_uid(), day, request.json["guesses"], guess_correct)
     return {
         "response": "OK",
         "result": {
@@ -55,6 +64,17 @@ def get_valid_people() -> list[str]:
         people.append(anyascii(db[person]["name"]))
     return people
 
+def calc_uid(): # not uuid
+    if request.headers.get('HTTP_X_FORWARDED_FOR', None):
+        ip = request.headers.get('HTTP_X_FORWARDED_FOR', None)
+    else:
+        ip = request.environ['REMOTE_ADDR']
+    
+    agent = request.headers.get('User-Agent')
+    timestamp = int(round(time()) % (5*60))
+    
+    return str(hash(f"{ip}{agent}"))[:32]
+    
 
 def increment_person():
     global current_day

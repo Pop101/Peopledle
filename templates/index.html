@@ -67,9 +67,9 @@
             <h2>Past People</h2>
             <hr>
             <ol class="columns">
-                {% for i in range(current_day) %}
+                {% for i in range(1, current_day + 1) %}
                 <li>
-                    <a href="/{{ i }}">Puzzle {{ i + 1 }}</a>
+                    <a href="/{{ i }}">Puzzle {{ i }} (Avg. {{ get_avg(i) }})</a>
                 </li>
                 {% endfor %}
             </ol>
