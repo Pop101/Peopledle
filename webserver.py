@@ -9,6 +9,7 @@ import hashlib
 
 hash = lambda x: int(hashlib.sha256(repr(x).encode("utf-8")).hexdigest(), 16) # Deterministic hash
 choice = lambda x, i: x[hash(i) % len(x)] # Deterministic choice
+clamp = lambda x, a, b: max(min(x, b), a)
 
 MAX_GUESSES = 5
 app = Flask(__name__)
@@ -43,7 +44,7 @@ def post_guess(day:int = 0):
     
     guess_correct = request.json["guess"].lower() == person["name"].lower() or anyascii(request.json["guess"].lower()) == anyascii(person["name"].lower())
     hint = '' if guess_correct or request.json["guesses"] >= len(person["guesses"]) else person["guesses"][request.json["guesses"]]
-    metrics.record_guess(calc_uid(), day, request.json["guesses"], guess_correct)
+    metrics.record_guess(calc_uid(), day, clamp(request.json["guesses"], 1, len(person["guesses"])), guess_correct)
     return {
         "response": "OK",
         "result": {
