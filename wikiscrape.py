@@ -36,7 +36,7 @@ def get_page(url) -> str:
     response.raise_for_status()
     return response.text
 
-def fetch_people_list_level3() -> list[dict]:
+def fetch_people_list_level3() -> list:
     page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles")
     page = Selector(page)
     
@@ -69,7 +69,7 @@ def fetch_people_list_level3() -> list[dict]:
             }
             
     
-def fetch_people_list_level4() -> list[dict]:
+def fetch_people_list_level4() -> list:
     page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4/People")
     page = Selector(page)
 

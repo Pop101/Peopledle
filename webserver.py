@@ -55,7 +55,7 @@ def post_guess(day:int = 0):
 
 
 @app.route("/names", methods=["GET"])
-def get_valid_people() -> list[str]:
+def get_valid_people() -> list:
     """Returns a list of all people in the database.
     Simplifies all unicode characters to ASCII.
     """
