@@ -147,7 +147,7 @@
             <h2>
                 {{ info['name'] }}
             </h2>
-            <div class="flex f-start">
+            <div class="flex f-start" style="height: 40vh; overflow: auto;">
                 <p>{{ info['summary'] }}</p>
                 <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
             </div>
@@ -174,7 +174,7 @@
         <section class="lightbox-section">
             <h2>{{ info['name'] }}</h2>
             <hr> <br>
-            <div class="flex" style="align-items: flex-start;">
+            <div class="flex f-start" style="height: 40vh; overflow: auto;">
                 <p>{{ info['summary'] }}</p>
                 <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
             </div>
