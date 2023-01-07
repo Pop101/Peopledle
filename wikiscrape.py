@@ -3,6 +3,7 @@ import re
 import time
 from parsel import Selector
 from modules.mongrel_db import MongrelDB
+from modules import config
 import wikipedia
 
 # Page layout:
@@ -14,9 +15,9 @@ import wikipedia
 #   h4 (optional): nanosection title
 #   ol: list of links (note: there are anchors with class="image". Ignore these)
 
-REQUEST_DELAY = 0.5  # seconds
+REQUEST_DELAY = config.get("request_delay", 1)
 
-db = MongrelDB("./data")
+db = MongrelDB(config.get("db_path", "./data"))
 time_of_last_request = 0
 
 
@@ -60,7 +61,6 @@ def fetch_people_list_level3() -> list:
             if "Wikipedia:" in href:
                 continue
 
-            print(person)
             db[re.sub(r"[.\\]", "", person)] = {
                 "name": person,
                 "url": f"https://en.wikipedia.org{href}",
@@ -100,7 +100,6 @@ def fetch_people_list_level4() -> list:
                     current_category[2],
                     text,
                 )
-            print(current_category)
 
         # If the element is a link, store it in the db
         elif elem_type == "a":
@@ -109,7 +108,6 @@ def fetch_people_list_level4() -> list:
             if "Wikipedia:" in href:
                 continue
 
-            print(person)
             db[re.sub(r"[.\\]", "", person)] = {
                 "name": person,
                 "url": f"https://en.wikipedia.org{href}",
@@ -188,9 +186,13 @@ def populate_person_details(name: str) -> str:
     }
 
 
-if __name__ == "__main__":
-    # fetch_people_list_level4()
+def main() -> None:
+    if config.get("difficulty").lower().startswith("hard"):
+        fetch_people_list_level4()
     fetch_people_list_level3()
     for name in db:
         print(f"Fetching {name}...")
         populate_person_details(db[name]["name"])
+
+if __name__ == "__main__":
+    main()

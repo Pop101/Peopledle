@@ -1,0 +1,16 @@
+# The difficulty of the end game
+# Affects how many options exist, with there
+# being over 900 more options on hard mode
+# Valid values: "Easy", "Hard"
+Difficulty: "Easy"
+
+# The maximum number of guesses the player can make
+# before the game ends
+Max Guesses: 5
+
+Port: 3465
+Scrape Delay: 1.0 # Delay between scraping pages in seconds
+Scrape Data Location: "./data" # Location of scraped data
+Database Location: "./metrics.db"
+
+Version: "v0.0.1"

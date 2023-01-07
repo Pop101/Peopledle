@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, abort
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
-from modules import metrics
+from modules import config, metrics
 from anyascii import anyascii
 from time import time
 import hashlib
@@ -11,9 +11,8 @@ hash = lambda x: int(hashlib.sha256(repr(x).encode("utf-8")).hexdigest(), 16) # 
 choice = lambda x, i: x[hash(i) % len(x)] # Deterministic choice
 clamp = lambda x, a, b: max(min(x, b), a)
 
-MAX_GUESSES = 5
 app = Flask(__name__)
-db = MongrelDB("./data")
+db = MongrelDB(config.get("db_path", "./data"))
 current_day = 0
 
 @app.route("/", methods=["GET"])
@@ -35,6 +34,7 @@ def past_people(day:int = 0):
         info = person,
         current_day = current_day,
         get_avg = lambda x: str(round(metrics.get_average(x), 2)),
+        version = config.get("version", "unknown"),
     )
                 
 
@@ -101,14 +101,14 @@ def get_person(day:int):
     # Choose a sentence from each part
     summary = full_data["sentences"]
     summary = list(filter(lambda x: len(x) < 400, summary))
-    if len(summary) < MAX_GUESSES:
+    if len(summary) < config.get("max_guesses", 5):
         return False
     
     # Repeat so a player that "lost" can keep playing
-    while len(summary) > MAX_GUESSES:
+    while len(summary) > config.get("max_guesses", 5):
         # Pick a guess from each chunk
-        chunk_size = len(summary) // MAX_GUESSES
-        for i in range(MAX_GUESSES):
+        chunk_size = len(summary) // config.get("max_guesses", 5)
+        for i in range(config.get("max_guesses", 5)):
             guess = choice(summary[i * chunk_size : (i + 1) * chunk_size], f"{current_day}{i}")
             person["guesses"].insert(0, guess)
         
@@ -119,6 +119,13 @@ def get_person(day:int):
     return person
 
 if __name__ == "__main__":
+    # Check if the database is empty
+    # If it is, run the scraper
+    if len(db) == 0:
+        print("Database is empty, running scraper...")
+        import wikiscrape
+        wikiscrape.main()
+    
     # Try to load current day from file
     # subtract 1 as we increment it later
     # if no file is found, we start at 0
@@ -134,7 +141,7 @@ if __name__ == "__main__":
     apsched.add_job(increment_person, "cron", day="*", hour="0")
 
     # Start the server
-    print("Starting server on port 8787")
+    port = config.get("port", 3465)
+    print(f"Starting server on http://127.0.0.1:{port}")
     print(get_person(current_day)["name"])
-    # USE WAITRESS IN PRODUCTION: serve(app, host="0.0.0.0", port=8787)
-    app.run(debug=True)
+    serve(app, host="0.0.0.0", port=port, threads=8)

@@ -1,7 +1,8 @@
 import sqlite3
+from . import config
 
 def __ensure_db_exists():
-    conn = sqlite3.connect("metrics.db")
+    conn = sqlite3.connect(config.get("database_location", "./metrics.db"))
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS guesses (uuid VARCHAR(32), day INTEGER, guesses INTEGER, correct INTEGER DEFAULT 0)")
     c.close()
