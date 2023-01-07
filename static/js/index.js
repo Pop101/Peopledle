@@ -5,6 +5,9 @@ window.get = function (url) {
     return fetch(url, { method: "GET" });
 }
 
+// initialize the carousel(s)
+new Glide('.glide').mount();
+
 // Load in the HUGE datalist of names asynchonously
 document.addEventListener('DOMContentLoaded', (event) => {
     window.get('/names').then(resp => resp.json()).then(data => {
@@ -48,10 +51,10 @@ function submitGuess() {
         if (data.result.correct) {
             showLightbox("correct");
             won = true;
-            
+
             document.getElementById("confetti").style.display = "block";
             setTimeout(() => document.getElementById("confetti").style.opacity = "1", 100);
-            
+
         } else {
             // Otherwise, show the next hint
             if (data.result.next_hint.length >= 0)
