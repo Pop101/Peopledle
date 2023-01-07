@@ -6,7 +6,7 @@ body {
     flex-direction: column;
 
 
-    padding: 2vmax;
+    padding: 2vmax 2vmax 0.5vmax 2vmax;
     height: calc(100% - 4vmax);
 
     background: white;
