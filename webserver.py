@@ -87,7 +87,7 @@ def get_person(day:int):
         # Pick a guess from each chunk
         chunk_size = len(summary) // MAX_GUESSES
         for i in range(MAX_GUESSES):
-            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size], i)
+            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size], f"{current_day}{i}")
             person["guesses"].insert(0, guess)
         
         # Remove those guesses from the summary
