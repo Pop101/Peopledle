@@ -17,7 +17,7 @@
 - [x] Allow past people
 - [x] Keep a record of all wins and losses
 - [ ] Keep an individual record of wins and losses (very shareable, like wordle)
-- [ ] Make deployments customizable
+- [x] Make deployments customizable
 - [ ] Move day.txt to a database
 - [ ] Replace the overlays on win and loss
 - [ ] Make GitHub page public
