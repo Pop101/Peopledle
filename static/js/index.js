@@ -24,10 +24,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 })
 
 let lock = false;
+let won = false;
 let guesses = 1;
 
 function submitGuess() {
-    if (lock) return;
+    if (lock || won) return;
 
     const guess = document.getElementById("guess").value;
     if (guess.length === 0) return;
@@ -46,6 +47,11 @@ function submitGuess() {
         // If you've guessed correctly, show the lightbox
         if (data.result.correct) {
             showLightbox("correct");
+            won = true;
+            
+            document.getElementById("confetti").style.display = "block";
+            setTimeout(() => document.getElementById("confetti").style.opacity = "1", 100);
+            
         } else {
             // Otherwise, show the next hint
             if (data.result.next_hint.length >= 0)
