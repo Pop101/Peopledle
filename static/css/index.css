@@ -76,6 +76,15 @@ p {
     text-align: left;
 }
 
+@keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#info>* {
+    animation: 1.2s 1 fadein;
+}
+
 #nav a {
     padding: 0.5em;
 }
