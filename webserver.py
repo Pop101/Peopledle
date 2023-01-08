@@ -35,6 +35,7 @@ def past_people(day:int = 0):
         current_day = current_day,
         get_avg = lambda x: str(round(metrics.get_average(x), 2)),
         version = config.get("version", "unknown"),
+        max_guesses = config.get("max_guesses", 5),
     )
                 
 

@@ -64,7 +64,7 @@ function submitGuess() {
                 out_of_guesses = true;
             }
 
-            if (guesses + 1 === 5) showLightbox("lose");
+            if (guesses === max_guesses + 1) showLightbox("lose");
 
             //... and clear the guess box
             document.getElementById("guess").value = "";
