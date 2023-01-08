@@ -81,6 +81,7 @@ function submitGuess() {
 function concede() {
     showLightbox("answer");
     showoverlay("lossoverlay");
+    makeItRain();
     game_over = true;
     document.getElementById("guess").value = answer;
 }

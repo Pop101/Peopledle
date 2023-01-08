@@ -117,8 +117,8 @@ p {
     display: none;
     opacity: 0;
     transition: opacity 1.5s ease-in;
-    background: rgba(68, 95, 215, 0.3);
-    backdrop-filter: saturate(80%);
+    backdrop-filter: contrast(80%) ;
+    overflow: hidden;
 }
 
 a:hover:not(.btn) {

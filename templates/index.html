@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="static/css/reset.css" />
     <link rel="stylesheet" href="static/css/index.css" />
     <link rel="stylesheet" href="static/css/lightbox.css" />
+    <link rel="stylesheet" href="static/css/rain.css" />
     <link rel="stylesheet" href="https://unpkg.com/@glidejs/glide@3.6.0/dist/css/glide.core.min.css" />
 </head>
 
@@ -17,7 +18,10 @@
     </datalist>
 
     <canvas id="confetti"></canvas>
-    <div id="lossoverlay"></div>
+    <div id="lossoverlay">
+        <div class="rain front-row"></div>
+        <div class="rain back-row"></div>
+    </div>
 
     <section id="nav" class="flex" style="align-items: baseline;">
         <h1>Peopledle</h1>
@@ -183,6 +187,7 @@
 
     <script src="https://unpkg.com/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
     <script src="static/js/confetti.js"></script>
+    <script src="static/js/rain.js"></script>
     <script src="static/js/index.js"></script>
     <script>
         const answer = "{{ info['name'] }}";
