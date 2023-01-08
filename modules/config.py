@@ -1,8 +1,9 @@
 import yaml
+from io import open
 
 cfg = None
 def __load_cfg():
-    with open("config.yml", "r") as f:
+    with open("config.yml", "r", encoding="utf-8") as f:
         raw_cfg = yaml.safe_load(f)
     
     return {

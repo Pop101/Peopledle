@@ -4,6 +4,7 @@ import time
 from parsel import Selector
 from modules.mongrel_db import MongrelDB
 from modules import config
+from anyascii import anyascii
 import wikipedia
 
 # Page layout:
@@ -177,7 +178,12 @@ def populate_person_details(name: str) -> str:
 
     # Dump anything we've found into the db
     db_name = re.sub(r"[.\\]", "", name)
+    if db_name not in db: db[db_name] = dict()
     db[db_name] = {
+        "name": page.title,
+        "url": page.url,
+        "difficulty": 5,
+        "categories": (None, None, None, None),
         **db[db_name],
         "img": img,
         "summary": summary,
@@ -190,9 +196,14 @@ def main() -> None:
     if config.get("difficulty").lower().startswith("hard"):
         fetch_people_list_level4()
     fetch_people_list_level3()
+    
     for name in db:
         print(f"Fetching {name}...")
         populate_person_details(db[name]["name"])
+    
+    for name in config.get("additional_people", []):
+        print(f"Fetching {name}...")
+        populate_person_details(anyascii(name))
 
 if __name__ == "__main__":
     main()
