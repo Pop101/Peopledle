@@ -1,6 +1,7 @@
 import requests
 import re
 import time
+from shutil import rmtree
 from parsel import Selector
 from modules.mongrel_db import MongrelDB
 from modules import config
@@ -193,13 +194,16 @@ def populate_person_details(name: str) -> str:
 
 
 def main() -> None:
-    if config.get("difficulty").lower().startswith("hard"):
-        fetch_people_list_level4()
-    fetch_people_list_level3()
+    rmtree(config.get("db_path", "./data"), ignore_errors=True)
     
-    for name in db:
-        print(f"Fetching {name}...")
-        populate_person_details(db[name]["name"])
+    if int(config.get("difficulty", 3)) >= 4:
+        fetch_people_list_level4()
+    if int(config.get("difficulty", 3)) >= 3:
+        fetch_people_list_level3()
+    
+        for name in db:
+            print(f"Fetching {name}...")
+            populate_person_details(db[name]["name"])
     
     for name in config.get("additional_people", []):
         print(f"Fetching {name}...")
