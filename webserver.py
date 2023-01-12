@@ -141,8 +141,12 @@ if __name__ == "__main__":
     apsched.start()
     apsched.add_job(increment_person, "cron", day="*", hour="0")
 
+    print("Today's Person:", get_person(current_day)["name"])
+    
     # Start the server
     port = config.get("port", 3465)
-    print(f"Starting server on http://127.0.0.1:{port}")
-    print(get_person(current_day)["name"])
-    serve(app, host="0.0.0.0", port=port, threads=8)
+    if config.get("debug", False):
+        app.run(host='0.0.0.0', port=port, debug=True)
+    else:
+        print(f"Starting server on http://127.0.0.1:{port}")
+        serve(app, host="0.0.0.0", port=port, threads=4)
