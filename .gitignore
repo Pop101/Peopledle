@@ -2,3 +2,4 @@ data/*
 *.pyc
 day.txt
 metrics.db
+config.yml
