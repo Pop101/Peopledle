@@ -27,4 +27,4 @@
   - [ ] Opengraph
   - [x] Favicon
   - [x] Github pictures & page
-- [ ] Make it work on mobile (text is microscopic, flex direction should switch to column-reverse, etc)
+- [x] Make it work on mobile (text is microscopic, flex direction should switch to column-reverse, etc)
