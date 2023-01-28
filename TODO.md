@@ -20,7 +20,7 @@
 - [x] Make deployments customizable
 - [x] Move day.txt to a database
 - [x] Replace the overlays on win and loss
-- [ ] Make GitHub page public
+- [x] Make GitHub page public
   - [x] Remove leftover Codel images
 - [x] Add a custom people list
 - [ ] Add marketing material

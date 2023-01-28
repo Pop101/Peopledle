@@ -16,6 +16,8 @@
 Guess the person from 5 sentences about them from their wikipedia page.
 Every guess reveals more information about the person, starting from obscure sentences from their page, to more and more revealing ones.
 
+Try it out at [https://peopledle.leibmann.org](https://peopledle.leibmann.org)!
+
 ![Screenshot](.github/screenshot.png)
 
 # Technologies
