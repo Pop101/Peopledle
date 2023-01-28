@@ -7,7 +7,7 @@ body {
     flex-direction: column;
 
     padding: 2vmax 2vmax 0.5vmax 2vmax;
-    height: calc(100% - 4vmax);
+    height: calc(100vh - 4vmax);
 
     background: white;
     border: 1px solid slategray;
@@ -17,11 +17,6 @@ body {
 html {
     background: #f6f6f6;
     background-image: linear-gradient(to bottom, #f6f6f6 50%, #e9e9e9 100%);
-    height: 100vh;
-}
-
-section {
-    overflow-x: hidden;
 }
 
 
@@ -180,7 +175,8 @@ a:hover:not(.btn) {
     padding: 1vmax;
 
     flex: 1 1;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .merged-input {
