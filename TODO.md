@@ -18,13 +18,13 @@
 - [x] Keep a record of all wins and losses
 - [ ] Keep an individual record of wins and losses (very shareable, like wordle)
 - [x] Make deployments customizable
-- [ ] Move day.txt to a database
+- [x] Move day.txt to a database
 - [ ] Replace the overlays on win and loss
 - [ ] Make GitHub page public
-  - [ ] Remove leftover Codel images
+  - [x] Remove leftover Codel images
 - [x] Add a custom people list
 - [ ] Add marketing material
   - [ ] Opengraph
-  - [ ] Favicon
-  - [ ] Github pictures & page
+  - [x] Favicon
+  - [x] Github pictures & page
 - [ ] Make it work on mobile (text is microscopic, flex direction should switch to column-reverse, etc)
