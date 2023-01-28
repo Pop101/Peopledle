@@ -14,7 +14,7 @@ Scrape Data Location: "./data" # Location of scraped data
 Database Location: "./metrics.db"
 
 Version: "v0.0.1"
-Server Debut: False
+Server Debug: False
 
 # A list of additional people to add to the game
 # on top of the vital articles

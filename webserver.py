@@ -145,7 +145,7 @@ if __name__ == "__main__":
     
     # Start the server
     port = config.get("port", 3465)
-    if config.get("debug", False):
+    if config.get("server debug", False):
         app.run(host='0.0.0.0', port=port, debug=True)
     else:
         print(f"Starting server on http://127.0.0.1:{port}")
