@@ -1,10 +1,10 @@
 body {
     margin: 2vmax 2vmax;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.0em;
 
     display: flex;
     flex-direction: column;
-
 
     padding: 2vmax 2vmax 0.5vmax 2vmax;
     height: calc(100% - 4vmax);
@@ -21,15 +21,20 @@ html {
 }
 
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
     line-height: 1.4;
     font-weight: normal;
+    font-size: 1.4em;
     margin: 0;
 }
 
-h1, h2 {
-    font-size: xx-large;
+h1,
+h2 {
+    font-size: 2em;
 }
 
 button,
@@ -77,8 +82,13 @@ p {
 }
 
 @keyframes fadein {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 #info>* {
@@ -117,7 +127,7 @@ p {
     display: none;
     opacity: 0;
     transition: opacity 1.5s ease-in;
-    backdrop-filter: contrast(80%) ;
+    backdrop-filter: contrast(80%);
     overflow: hidden;
 }
 
@@ -210,10 +220,10 @@ a:hover:not(.btn) {
     background-color: transparent;
     border: 0px solid transparent;
     border-radius: 4px;
-    text-shadow: 0 .25em .5em rgba(0,0,0,.1);
+    text-shadow: 0 .25em .5em rgba(0, 0, 0, .1);
     opacity: 1;
     cursor: pointer;
-    transition: opacity 150ms ease,border 300ms ease-in-out;
+    transition: opacity 150ms ease, border 300ms ease-in-out;
     transform: translateY(-50%);
     line-height: 1;
 }
@@ -233,5 +243,38 @@ a:hover:not(.btn) {
 
     .columns {
         column-count: 1;
+    }
+}
+
+@media (max-width: 1080px) {
+    #main {
+        flex-direction: column-reverse;
+    }
+
+    #main>* {
+        width: 96%;
+        min-height: unset;
+    }
+
+    body {
+        font-size: 1.7em;
+    }
+
+    h1,
+    h2 {
+        font-size: 3em;
+    }
+
+    .merged-input>* {
+        font-size: 1.7em;
+    }
+
+    .glide__slide .flex {
+        flex-direction: column;
+        font-size: 1.4em;
+    }
+
+    .glide__slide h2 {
+        font-size: 1.6em;
     }
 }
