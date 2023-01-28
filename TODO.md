@@ -22,7 +22,7 @@
 - [ ] Replace the overlays on win and loss
 - [ ] Make GitHub page public
   - [ ] Remove leftover Codel images
-- [ ] Add a custom people list
+- [x] Add a custom people list
 - [ ] Add marketing material
   - [ ] Opengraph
   - [ ] Favicon
