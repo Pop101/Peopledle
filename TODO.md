@@ -19,7 +19,7 @@
 - [ ] Keep an individual record of wins and losses (very shareable, like wordle)
 - [x] Make deployments customizable
 - [x] Move day.txt to a database
-- [ ] Replace the overlays on win and loss
+- [x] Replace the overlays on win and loss
 - [ ] Make GitHub page public
   - [x] Remove leftover Codel images
 - [x] Add a custom people list
