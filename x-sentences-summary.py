@@ -44,7 +44,7 @@ def summary(sentences:set[str]) -> list[str]:
 # DEV: EVERYTHING PAST THIS POINT DEBUG AND TESTING
 def main():
     print("\n\n\nTESTING RESULTS")
-    with open('data/14th Dalai Lama.json') as file:
+    with open('data/ABBA.json') as file:
         loadedJSON = json.load(file)
         sentences = set(loadedJSON["sentences"])
         importantSentences = select(sentences, 6)
