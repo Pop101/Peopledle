@@ -5,3 +5,4 @@ parsel>=1.7.0
 anyascii>=0.3.1
 APScheduler>=3.9.1.post1
 PyYAML>=5.1b1
+networkx>=3.0
