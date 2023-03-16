@@ -2,7 +2,7 @@ import json
 import networkx as nx
 import string
 
-def summary(sentences:set[str]) -> dict[str, int]:
+def summary(sentences:set[str]) -> dict[str, float]:
     # PRE-PROCESSING
     G = nx.Graph()
 
@@ -27,9 +27,8 @@ def summary(sentences:set[str]) -> dict[str, int]:
 
     # 3. PageRank
     pr = nx.pagerank(G)
-    print(pr)
 
-    return []
+    return sorted(pr, key=pr.get)
 
 
 
@@ -37,11 +36,15 @@ def summary(sentences:set[str]) -> dict[str, int]:
 
 # DEV: EVERYTHING PAST THIS POINT DEBUG AND TESTING
 def main():
-    with open('data/Abu Bakr.json') as file:
+    print("\n\n\nTESTING RESULTS")
+    with open('data/14th Dalai Lama.json') as file:
         loadedJSON = json.load(file)
         sentences = loadedJSON["sentences"]
         importantSentences = summary(set(sentences))
-        print(importantSentences)
+
+        for i in range(0, len(importantSentences), 10):
+            sentence = importantSentences[i]
+            print(f"SENTENCE {i} IS THE SENTENCE \" {sentence} \"")
 
 if __name__ == "__main__":
     main()
