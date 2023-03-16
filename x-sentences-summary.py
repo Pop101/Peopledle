@@ -2,7 +2,14 @@ import json
 import networkx as nx
 import string
 
-def summary(sentences:set[str]) -> dict[str, float]:
+def select(sentences:set[str], number:int):
+    sentenceList = summary(sentences)
+    result = []
+    for i in range(0, len(sentenceList), (int) (len(sentenceList) / number)):
+        result.append(sentenceList[i])
+    return result
+
+def summary(sentences:set[str]) -> list[str]:
     # PRE-PROCESSING
     G = nx.Graph()
 
@@ -39,12 +46,12 @@ def main():
     print("\n\n\nTESTING RESULTS")
     with open('data/14th Dalai Lama.json') as file:
         loadedJSON = json.load(file)
-        sentences = loadedJSON["sentences"]
-        importantSentences = summary(set(sentences))
+        sentences = set(loadedJSON["sentences"])
+        importantSentences = select(sentences, 6)
 
-        for i in range(0, len(importantSentences), 10):
+        for i in range(0, len(importantSentences)):
             sentence = importantSentences[i]
-            print(f"SENTENCE {i} IS THE SENTENCE \" {sentence} \"")
+            print(f"SENTENCE {i + 1} IS THE SENTENCE \"{sentence}\"")
 
 if __name__ == "__main__":
     main()
