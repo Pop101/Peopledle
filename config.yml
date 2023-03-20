@@ -9,7 +9,7 @@ Wikipedia List Level: 3
 Max Guesses: 5
 
 Port: 3465
-Scrape Delay: 1.0 # Delay between scraping pages in seconds
+Scrape Delay: 0.1 # Delay between scraping pages in seconds
 Scrape Data Location: "./data" # Location of scraped data
 Database Location: "./metrics.db"
 

@@ -1,12 +1,10 @@
-import requests
 import re
-import time
 from shutil import rmtree
-from parsel import Selector
+from os import makedirs
 from modules.mongrel_db import MongrelDB
 from modules import config
 from anyascii import anyascii
-import wikipedia
+from modules import wikipedia
 
 # Page layout:
 # h2: category title (note that there are 2 h2s that are not category titles: Contents and Navigation menu)
@@ -17,117 +15,86 @@ import wikipedia
 #   h4 (optional): nanosection title
 #   ol: list of links (note: there are anchors with class="image". Ignore these)
 
-REQUEST_DELAY = config.get("request_delay", 1)
-
+wikipedia.set_delay(config.get("scrape_delay", 1))
 db = MongrelDB(config.get("db_path", "./data"))
-time_of_last_request = 0
 
+ 
 
-def ensure_request_delay():
-    global time_of_last_request
+def splitmatch(pattern, string, flags=0):
+    """Splits a string into a list of matches and the text between them
+    If there's no match, returns None, `string`
 
-    if time.time() - time_of_last_request < REQUEST_DELAY:
-        time.sleep(REQUEST_DELAY - (time.time() - time_of_last_request))
+    Args:
+        pattern (Regex String): Regex pattern to match
+        string (str): Type to match
+        flags (int, optional): Regex Flags to apply. Defaults to 0.
 
+    Yields:
+        re.Match: Match object
+        str: Text between matches
+    """
+    matches = re.finditer(pattern, string, flags)
+    last_match = next(matches, None)
 
-def get_page(url) -> str:
-    """Gets the page at the given url"""
-    ensure_request_delay()
+    if last_match == None: return None, string   
 
-    response = requests.get(url)
-    time_of_last_request = time.time()
-    response.raise_for_status()
-    return response.text
+    for match in matches:
+        yield last_match, string[last_match.end():match.start()]
+        last_match = match
 
+    yield last_match, string[last_match.end():]
+
+ 
 def fetch_people_list_level3() -> list:
-    page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles")
-    page = Selector(page)
+    page_body = wikipedia.get_full_page("Wikipedia:Vital Articles")
+    page_body = next(filter(
+        lambda x: x[0].groups()[0] == 'People',
+        splitmatch(r'^==\s?([A-Za-z]+).*==$', page_body, re.M)
+    ))[1]
     
-    current_category = (None, None, None, None)
-    people_div = page.xpath('//*[@id="mw-content-text"]/div[1]/div[4]/div/h2[2]/following-sibling::*[1]')[0]
-    h_a_selector = """.//h3 | .//a[not(@class="image")]"""
-    
-    for elem in people_div.xpath(h_a_selector):
-        elem_type = elem.xpath("name()").get()
-        if re.match(r"h\d", elem_type):
-            # header
-            text = elem.css("::text").get()
-            text = re.sub(r"\s+", " ", text)
-            text = re.sub(r"\(.*\)", "", text).strip()
-            
-            current_category = [text, None, None, None]
-        elif elem_type == "a":
-            # Link
-            person = elem.css("::text").get()
-            href = elem.xpath("@href").get()
-            if "Wikipedia:" in href:
-                continue
+    for category, ppl_list in splitmatch(r'^===\s?([A-Za-z]+).*===$', page_body, re.M):
+        category = category.groups()[0]
+        for person in re.finditer(r'^[#*] ({{Icon\|(\w*)}} )+\[\[((\w|\s)+)\|?((\w|\s)*)\]\] ?$', ppl_list, re.M):
+            href = person.groups()[-4]
+            name = person.groups()[-2] or href
 
-            db[re.sub(r"[.\\]", "", person)] = {
-                "name": person,
-                "url": f"https://en.wikipedia.org{href}",
-                "categories": current_category,
+            db[re.sub(r"[.\\]", "", href)] = {
+                "name": name,
+                "url": f"https://en.wikipedia.org/wiki/{href.replace(' ', '_')}", # pray this is right (if not, we can burn a request to fix)
+                "categories": [category],
                 "difficulty": 3,
             }
-            
+             
     
 def fetch_people_list_level4() -> list:
-    page = get_page("https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4/People")
-    page = Selector(page)
+    page_body = wikipedia.get_full_page("Wikipedia:Vital articles/Level/4/People")
 
-    # Iterate through all relevant headers and links in the page
-    current_category = (None, None, None, None)
-    h_a_selector = """//h2[not(contains(., "Navigation") or contains(., "Contents") or contains(.,"ext-"))] |
-                      //h3[not(contains(@id, "p-"))] | //h4 | //h5 |
-                      //div[@class="div-col"]//ol//a[not(@class="image")]"""
+    current_category = []
+    for header, body in splitmatch(r'^(=*)\s?([A-Za-z]+).*\1$', page_body, re.M):
+        # Update category
+        idx = header.groups()[0].count('=') - 2
+        current_category = current_category[:idx]
+        current_category.append(header.groups()[1])
 
-    for elem in page.xpath(h_a_selector):
-        elem_type = elem.xpath("name()").get()
-        if re.match(r"h\d", elem_type):
-            text = elem.css("::text").get()
-            text = re.sub(r"\s+", " ", text)
-            text = re.sub(r"\(.*\)", "", text).strip()
+        # Add people from body text
+        for person in re.finditer(r'^[#*] ({{Icon\|(\w*)}} )+\[\[((\w|\s)+)\|?((\w|\s)*)\]\] ?$', body, re.M):
+                href = person.groups()[-4].replace(' ', '_')
+                name = person.groups()[-2] or href
 
-            # Use headers to set category details
-            if elem_type == "h2":
-                current_category = (text, None, None, None)
-            elif elem_type == "h3":
-                current_category = (current_category[0], text, None, None)
-            elif elem_type == "h4":
-                current_category = (current_category[0], current_category[1], text, None)
-            elif elem_type == "h5":
-                current_category = (
-                    current_category[0],
-                    current_category[1],
-                    current_category[2],
-                    text,
-                )
-
-        # If the element is a link, store it in the db
-        elif elem_type == "a":
-            person = elem.css("::text").get()
-            href = elem.xpath("@href").get()
-            if "Wikipedia:" in href:
-                continue
-
-            db[re.sub(r"[.\\]", "", person)] = {
-                "name": person,
-                "url": f"https://en.wikipedia.org{href}",
-                "categories": current_category,
-                "difficulty": 4,
-            }
+                print([re.sub(r"[.\\]", "", href)], {
+                    "name": name,
+                    "url": f"https://en.wikipedia.org/wiki/{href}",
+                    "categories": current_category,
+                    "difficulty": 3,
+                })
 
 
 def populate_person_details(name: str) -> str:
     """Given a person's name,
     fetches their details off wikipedia and stores them in the db.
     """
-    ensure_request_delay()
-
-    page = wikipedia.page(title=name, auto_suggest=False, redirect=True)
-    
-    summary = page.summary
-    content = page.content
+    summary = wikipedia.get_page_summary(name)
+    content = wikipedia.get_page_text(name)
     
     # Remove references and bibliography sections from the content        
     content = re.sub(r'==.*bibliography(.|\s)*', "", content, flags=re.IGNORECASE)
@@ -170,22 +137,17 @@ def populate_person_details(name: str) -> str:
 
     # Get the page image, if it exists
     # This takes an extra web request
-    img = "/static/img/question.svg"
-    parsel = Selector(get_page(page.url))  # very slow, but necessary to get the correct image
-    
-    html_img = parsel.xpath('//tbody/tr/td[contains(@class, "photo") or contains(@class, "infobox-image")]/a/img')
-    if html_img:
-        img = html_img.xpath("./@src").get()
+    img = wikipedia.get_image_url(name)
 
     # Dump anything we've found into the db
     db_name = re.sub(r"[.\\]", "", name)
     if db_name not in db: db[db_name] = dict()
     db[db_name] = {
-        "name": page.title,
-        "url": page.url,
+        "name": name,
+        "url": f"https://en.wikipedia.org/wiki/{name.replace(' ', '_')}",
         "difficulty": 5,
-        "categories": (None, None, None, None),
-        **db[db_name],
+        "categories": list(), # would be cool to get this to work, just in general. Good hint system
+        **db[db_name], # overwrite the above with any existing data
         "img": img,
         "summary": summary,
         "content": content,
@@ -195,6 +157,7 @@ def populate_person_details(name: str) -> str:
 
 def main() -> None:
     rmtree(config.get("db_path", "./data"), ignore_errors=True)
+    makedirs(config.get("db_path", "./data"))
     
     if int(config.get("difficulty", 3)) >= 4:
         fetch_people_list_level4()
