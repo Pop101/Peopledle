@@ -210,8 +210,19 @@ def pagerank(M, num_iterations: int = 100, d: float = 0.85):
 
     """
 
+    if not isinstance(M, np.ndarray):
+        M = np.array(M)
+    
+    if len(M.shape) != 2:
+        raise ValueError("Adjacency matrix must be 2D")
+    
+    if M.shape[0] != M.shape[1]:
+        raise ValueError("Adjacency matrix must be square")
+    
     # Preprocess to ensure all columns sum to 1
+    # Special case for columns with all 0s
     M_column_sum = np.sum(M, axis=0)
+    M_column_sum[M_column_sum == 0] = 1
     M = M / M_column_sum
 
     N = M.shape[1]

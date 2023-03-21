@@ -116,7 +116,7 @@ def populate_person_details(name: str) -> str:
     for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", content):
         name_part_list = name.split()
         for name_part in name_part_list:
-            if len(name_part) >= 3 and name_part in sentence:
+            if len(name_part.strip('.')) >= 2 and name_part in sentence:
 
                 # Clean up the sentence
                 # 1. Remove everything inside parentheses, including the parentheses
