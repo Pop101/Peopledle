@@ -219,6 +219,9 @@ def pagerank(M, num_iterations: int = 100, d: float = 0.85):
     if M.shape[0] != M.shape[1]:
         raise ValueError("Adjacency matrix must be square")
     
+    if not M.shape[0] or not M.shape[1]:
+        return []
+    
     # Preprocess to ensure all columns sum to 1
     # Special case for columns with all 0s
     M_column_sum = np.sum(M, axis=0)
