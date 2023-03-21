@@ -2,13 +2,12 @@ from flask import Flask, render_template, request, abort
 from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
+from modules.determinism import choice, hash, reseed, set_seed
 from modules import config, metrics
 from anyascii import anyascii
 from time import time
 import hashlib
 
-hash = lambda x: int(hashlib.sha256(repr(x).encode("utf-8")).hexdigest(), 16) # Deterministic hash
-choice = lambda x, i: x[hash(i) % len(x)] # Deterministic choice
 clamp = lambda x, a, b: max(min(x, b), a)
 
 app = Flask(__name__)
@@ -88,7 +87,9 @@ def increment_person():
         f.write(str(current_day))
 
 def get_person(day:int):
-    person_name = list(db)[hash(day) % len(db)]
+    set_seed(day)
+    
+    person_name = choice(list(db))
     full_data = db[person_name]
     person = {
         "name": full_data["name"],
@@ -110,7 +111,7 @@ def get_person(day:int):
         # Pick a guess from each chunk
         chunk_size = len(summary) // config.get("max_guesses", 5)
         for i in range(config.get("max_guesses", 5)):
-            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size], f"{current_day}{i}")
+            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size])
             person["guesses"].insert(0, guess)
         
         # Remove those guesses from the summary
