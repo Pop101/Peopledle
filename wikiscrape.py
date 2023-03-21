@@ -61,7 +61,7 @@ def fetch_people_list_level3() -> list:
 
             db[re.sub(r"[.\\]", "", href)] = {
                 "name": name,
-                "url": f"https://en.wikipedia.org/wiki/{href.replace(' ', '_')}", # pray this is right (if not, we can burn a request to fix)
+                "url": f"https://en.wikipedia.org/wiki/{anyascii(href).replace(' ', '_')}", # pray this is right (if not, we can burn a request to fix)
                 "categories": [category],
                 "difficulty": 3,
             }
@@ -84,7 +84,7 @@ def fetch_people_list_level4() -> list:
 
             db[re.sub(r"[.\\]", "", href)] = {
                 "name": name,
-                "url": f"https://en.wikipedia.org/wiki/{href.replace(' ', '_')}",
+                "url": f"https://en.wikipedia.org/wiki/{anyascii(href).replace(' ', '_')}",
                 "categories": current_category,
                 "difficulty": 4,
             }
@@ -128,10 +128,10 @@ def populate_person_details(name: str) -> str:
                 # 3. Split name into Name-Components, 1 through ??? (probably no more than 5)
                 # 4. Redact each of these per sentence by replacing it with [NAME COMPONENT X] where X is the number of the component.
                 for name_number, name_part in enumerate(name_part_list):
-                    if len(name_part) < 3:
+                    if len(name_part.strip('.')) < 2:
                         continue
                     #sentence = re.sub(name_part,'[NAME COMPONENT ' + str(name_number + 1) + ']',sentence)
-                    sentence = re.sub(name_part, '█'*len(name_part), sentence)
+                    sentence = re.sub(name_part, '█'*len(name_part), sentence, flags=re.UNICODE | re.IGNORECASE)
 
                 sentences_with_name.add(sentence)
                 break
@@ -148,7 +148,7 @@ def populate_person_details(name: str) -> str:
     if db_name not in db: db[db_name] = dict()
     db[db_name] = {
         "name": name,
-        "url": f"https://en.wikipedia.org/wiki/{name.replace(' ', '_')}",
+        "url": f"https://en.wikipedia.org/wiki/{anyascii(name).replace(' ', '_')}",
         "difficulty": 5,
         "categories": list(), # would be cool to get this to work, just in general. Good hint system
         **db[db_name], # overwrite the above with any existing data
@@ -157,6 +157,9 @@ def populate_person_details(name: str) -> str:
         "content": content,
         "sentences": ranked_sentences,
     }
+    
+    if len(ranked_sentences) == 0:
+        print(f"WARNING: {name} has no sentences with their name in them. This is probably a bug.")
 
 
 def main() -> None:
@@ -174,7 +177,7 @@ def main() -> None:
     
     for name in config.get("additional_people", []):
         print(f"Fetching {name}...")
-        populate_person_details(anyascii(name))
+        populate_person_details(name)
 
 if __name__ == "__main__":
     main()
