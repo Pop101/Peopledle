@@ -10,7 +10,7 @@ def select(ranked_sentences:dict[str, float], number:int) -> list[str]:
     # Selects the N most differently-ranked sentences
     
     ranked_sentences = sorted(ranked_sentences.items(), key=lambda x: x[1], reverse=True)
-    return [ranked_sentences[i][0] for i in range(0, len(ranked_sentences), len(ranked_sentences) // number)][::-1]
+    return [ranked_sentences[i][0] for i in range(0, len(ranked_sentences), len(ranked_sentences) // number + 1)][::-1]
 
 def summary(sentences:set[str]) -> dict[str, float]:
     # PRE-PROCESSING
