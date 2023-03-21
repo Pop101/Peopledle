@@ -4,7 +4,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
 from modules.determinism import choice, hash, reseed, set_seed
 from modules.pagerank_hinter import randomize_const, select
+from modules.simplecache import cache, KB
 from modules import config, metrics
+from Levenshtein import distance
 from anyascii import anyascii
 from time import time
 import hashlib
@@ -43,7 +45,8 @@ def past_people(day:int = 0):
 def post_guess(day:int = 0):
     person = get_person(day)
     
-    guess_correct = request.json["guess"].lower() == person["name"].lower() or anyascii(request.json["guess"].lower()) == anyascii(person["name"].lower())
+    max_distance = round(len(person["name"]) * 0.05 + 0.49)
+    guess_correct = distance(request.json["guess"], person["name"], processor=lambda x: anyascii(x.lower()), score_cutoff = max_distance) < max_distance
     hint = '' if guess_correct or request.json["guesses"] >= len(person["guesses"]) else person["guesses"][request.json["guesses"]]
     metrics.record_guess(calc_uid(), day, clamp(request.json["guesses"], 1, len(person["guesses"])), guess_correct)
     return {
@@ -87,6 +90,7 @@ def increment_person():
     with open("day.txt", "w") as f:
         f.write(str(current_day))
 
+@cache(512 * KB)
 def get_person(day:int):
     set_seed(day)
     
