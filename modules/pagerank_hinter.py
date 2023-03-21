@@ -7,13 +7,13 @@ import re
 
 
 
-def select(ranked_sentences:dict[str, float], number:int) -> list[str]:
+def select(ranked_sentences:dict, number:int) -> list:
     # Selects the N most differently-ranked sentences
     
     ranked_sentences = sorted(ranked_sentences.items(), key=lambda x: x[1], reverse=True)
     return [ranked_sentences[i][0] for i in range(0, len(ranked_sentences), len(ranked_sentences) // number + 1)][::-1]
 
-def randomize_const(ranked_sentences:dict[str, float], const:float, seed = 0) -> dict[str, float]:
+def randomize_const(ranked_sentences:dict, const:float, seed = 0) -> dict:
     # Randomizes the ranking of each sentence by a constant
     # This is to prevent the same sentences being selected
     # every time
@@ -28,7 +28,7 @@ def randomize_const(ranked_sentences:dict[str, float], const:float, seed = 0) ->
     
     return ranked_sentences
 
-def randomize_scalar(ranked_sentences:dict[str, float], scalar:float, seed = 0) -> dict[str, float]:
+def randomize_scalar(ranked_sentences:dict, scalar:float, seed = 0) -> dict:
     # Randomizes the ranking of each sentence by a scalar
     # This is to prevent the same sentences being selected
     # every time
@@ -42,7 +42,7 @@ def randomize_scalar(ranked_sentences:dict[str, float], scalar:float, seed = 0) 
     
 
     
-def rank(sentences_to_rank:set[str], all_sentences:set[str]=set()) -> dict[str, float]:
+def rank(sentences_to_rank:set, all_sentences:set=set()) -> dict:
     # PRE-PROCESSING
     G = Graph()
 
