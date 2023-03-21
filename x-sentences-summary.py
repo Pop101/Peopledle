@@ -1,7 +1,10 @@
 import json
 from modules.Graph import WeightedUndirectedGraph as Graph
 from modules.Graph import pagerank
+from modules.stopwords import stopwords
 import re
+
+
 
 def select(sentences:set[str], number:int):
     sentenceList = summary(sentences)
@@ -24,10 +27,11 @@ def summary(sentences:set[str]) -> list[str]:
     # Edges are undirected, but will be converted
     # to directed by the PageRank library (later)
     for sentence in sentences:
-        words = sentence.split()
-
-        for word in words:
-            word = re.sub(r'[^\w]', '', word).lower()
+        for word in re.split(r"\s+|-", sentence):
+            word = re.sub(r"[^\w█']", '', word).lower()
+            
+            if not word or word in stopwords or '█' in word:
+                continue
 
             for node in G:
                 if word in node:
