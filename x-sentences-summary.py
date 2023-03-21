@@ -33,7 +33,7 @@ def summary(sentences:set[str]) -> dict[str, float]:
                 continue
 
             for node in G:
-                if word in node:
+                if word in node.lower():
                     G.add_edge(sentence, node)
 
     # 3. PageRank
