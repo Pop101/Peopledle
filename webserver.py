@@ -6,7 +6,7 @@ from modules.determinism import choice, hash, reseed, set_seed
 from modules.pagerank_hinter import randomize_const, select
 from modules.simplecache import cache, KB
 from modules import config, metrics
-from Levenshtein import distance
+import Levenshtein as l
 from anyascii import anyascii
 from time import time
 import hashlib
@@ -46,7 +46,7 @@ def post_guess(day:int = 0):
     person = get_person(day)
     
     max_distance = round(len(person["name"]) * 0.05 + 0.49)
-    guess_correct = distance(request.json["guess"], person["name"], processor=lambda x: anyascii(x.lower()), score_cutoff = max_distance) < max_distance
+    guess_correct = l.distance(request.json["guess"], person["name"], processor=lambda x: anyascii(x.lower()), score_cutoff = max_distance) < max_distance
     hint = '' if guess_correct or request.json["guesses"] >= len(person["guesses"]) else person["guesses"][request.json["guesses"]]
     metrics.record_guess(calc_uid(), day, clamp(request.json["guesses"], 1, len(person["guesses"])), guess_correct)
     return {
