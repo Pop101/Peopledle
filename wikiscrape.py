@@ -78,15 +78,15 @@ def fetch_people_list_level4() -> list:
 
         # Add people from body text
         for person in re.finditer(r'^[#*] ({{Icon\|(\w*)}} )+\[\[((\w|\s)+)\|?((\w|\s)*)\]\] ?$', body, re.M):
-                href = person.groups()[-4].replace(' ', '_')
-                name = person.groups()[-2] or href
+            href = person.groups()[-4]
+            name = person.groups()[-2] or href
 
-                print([re.sub(r"[.\\]", "", href)], {
-                    "name": name,
-                    "url": f"https://en.wikipedia.org/wiki/{href}",
-                    "categories": current_category,
-                    "difficulty": 3,
-                })
+            db[re.sub(r"[.\\]", "", href)] = {
+                "name": name,
+                "url": f"https://en.wikipedia.org/wiki/{href.replace(' ', '_')}",
+                "categories": current_category,
+                "difficulty": 4,
+            }
 
 
 def populate_person_details(name: str) -> str:
@@ -159,9 +159,9 @@ def main() -> None:
     rmtree(config.get("db_path", "./data"), ignore_errors=True)
     makedirs(config.get("db_path", "./data"))
     
-    if int(config.get("difficulty", 3)) >= 4:
+    if int(config.get("wikipedia_list_level", 3)) >= 4:
         fetch_people_list_level4()
-    if int(config.get("difficulty", 3)) >= 3:
+    if int(config.get("wikipedia_list_level", 3)) >= 3:
         fetch_people_list_level3()
     
         for name in db:
