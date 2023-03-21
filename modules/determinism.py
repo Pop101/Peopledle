@@ -1,7 +1,7 @@
 import hashlib
 
 def hash(x):
-    return int(hashlib.md5(repr(x).encode("utf-8"), usedforsecurity=False).hexdigest(), 16)
+    return int(hashlib.md5(repr(x).encode("utf-8")).hexdigest(), 16)
 
 seed = hash(0)
 
