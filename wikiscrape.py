@@ -2,6 +2,7 @@ import re
 from shutil import rmtree
 from os import makedirs
 from modules.mongrel_db import MongrelDB
+from modules.pagerank_hinter import rank
 from modules import config
 from anyascii import anyascii
 from modules import wikipedia
@@ -111,7 +112,7 @@ def populate_person_details(name: str) -> str:
 
     # Get all sentences that contain the person's name
     # (this is used to generate the questions later)
-    sentences_with_name = list()
+    sentences_with_name = set()
     for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", content):
         name_part_list = name.split()
         for name_part in name_part_list:
@@ -132,8 +133,11 @@ def populate_person_details(name: str) -> str:
                     #sentence = re.sub(name_part,'[NAME COMPONENT ' + str(name_number + 1) + ']',sentence)
                     sentence = re.sub(name_part, '█'*len(name_part), sentence)
 
-                sentences_with_name.append(sentence)
+                sentences_with_name.add(sentence)
                 break
+    
+    # Rank the sentences
+    ranked_sentences = rank(sentences_with_name)
 
     # Get the page image, if it exists
     # This takes an extra web request
@@ -151,7 +155,7 @@ def populate_person_details(name: str) -> str:
         "img": img,
         "summary": summary_markup,
         "content": content,
-        "sentences": sentences_with_name,
+        "sentences": ranked_sentences,
     }
 
 

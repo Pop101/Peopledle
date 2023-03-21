@@ -3,6 +3,7 @@ from waitress import serve
 from apscheduler.schedulers.background import BackgroundScheduler
 from modules.mongrel_db import MongrelDB
 from modules.determinism import choice, hash, reseed, set_seed
+from modules.pagerank_hinter import randomize_const, select
 from modules import config, metrics
 from anyascii import anyascii
 from time import time
@@ -99,24 +100,18 @@ def get_person(day:int):
         "guesses": list(),
     }
 
-    # Split sentences list into equal parts
-    # Choose a sentence from each part
-    summary = full_data["sentences"]
-    summary = list(filter(lambda x: len(x) < 400, summary))
-    if len(summary) < config.get("max_guesses", 5):
-        return False
+    # Generate hints
+    ranked_sentences = full_data["sentences"]
+    ranked_sentences = randomize_const(ranked_sentences, 0.04)
+    ranked_sentences = dict(sorted(ranked_sentences.items(), key=lambda x: x[1]))
+    ranked_sentences = dict(filter(lambda x: 30 < len(x[0]) < 400, ranked_sentences.items()))
+    
+    guesses = select(ranked_sentences, config.get("max_guesses", 5))
     
     # Repeat so a player that "lost" can keep playing
-    while len(summary) > config.get("max_guesses", 5):
-        # Pick a guess from each chunk
-        chunk_size = len(summary) // config.get("max_guesses", 5)
-        for i in range(config.get("max_guesses", 5)):
-            guess = choice(summary[i * chunk_size : (i + 1) * chunk_size])
-            person["guesses"].insert(0, guess)
-        
-        # Remove those guesses from the summary
-        for guess in summary:
-            summary.remove(guess)
+    guesses.extend(x for x in ranked_sentences if x not in guesses)
+    
+    person["guesses"] = guesses
     
     return person
 
