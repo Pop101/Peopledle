@@ -154,8 +154,8 @@
                 {{ info['name'] }}
             </h2>
             <div class="flex f-start" style="height: 40vh; overflow: auto;">
-                <p>{{ info['summary'] }}</p>
-                <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
+                <div style="flex: 1;">{{ info['summary']|safe }}</div>
+                <div style="height: 20vh;"><img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}"></div>
             </div>
 
         </section>
@@ -181,8 +181,8 @@
             <h2>{{ info['name'] }}</h2>
             <hr> <br>
             <div class="flex f-start" style="height: 40vh; overflow: auto;">
-                <p>{{ info['summary'] }}</p>
-                <img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}" style="flex: 0.2;">
+                <div style="flex: 1;">{{ info['summary']|safe }}</div>
+                <div style="height: 20vh;"><img src="{{ info['img'] }}" alt="A picture of {{ info['name'] }}"></div>
             </div>
         </section>
     </div>
