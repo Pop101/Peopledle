@@ -12,12 +12,12 @@ def select(ranked_sentences:dict[str, float], number:int) -> list[str]:
     ranked_sentences = sorted(ranked_sentences.items(), key=lambda x: x[1], reverse=True)
     return [ranked_sentences[i][0] for i in range(0, len(ranked_sentences), len(ranked_sentences) // number + 1)][::-1]
 
-def summary(sentences:set[str]) -> dict[str, float]:
+def rank(sentences_to_rank:set[str], all_sentences:set[str]=set()) -> dict[str, float]:
     # PRE-PROCESSING
     G = Graph()
 
     # 1. Construct all nodes, one node per sentence
-    for sentence in sentences:
+    for sentence in sentences_to_rank:
         G.add_node(sentence)
 
 
@@ -25,7 +25,7 @@ def summary(sentences:set[str]) -> dict[str, float]:
     # 2. Construct all edges, one edge per word
     # Edges are undirected, but will be converted
     # to directed by the PageRank library (later)
-    for sentence in sentences:
+    for sentence in sentences_to_rank:
         for word in re.split(r"\s+|-", sentence):
             word = re.sub(r"[^\w█']", '', word).lower()
 
@@ -53,7 +53,7 @@ def main():
         loaded_json = json.load(file)
         sentences = set(loaded_json["sentences"])
         
-    ranked_sentences = summary(sentences)
+    ranked_sentences = rank(sentences)
     important_sentences = select(ranked_sentences, 5)
 
     for i, sentence in enumerate(important_sentences):
