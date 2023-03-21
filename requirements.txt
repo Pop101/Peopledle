@@ -3,4 +3,3 @@ waitress>=2.1.2
 anyascii>=0.3.1
 APScheduler>=3.9.1.post1
 PyYAML>=5.1b1
-python-Levenshtein>=0.12.2
