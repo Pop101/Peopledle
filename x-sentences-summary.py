@@ -1,7 +1,7 @@
 import json
 from modules.Graph import WeightedUndirectedGraph as Graph
 from modules.Graph import pagerank
-import string
+import re
 
 def select(sentences:set[str], number:int):
     sentenceList = summary(sentences)
@@ -26,15 +26,15 @@ def summary(sentences:set[str]) -> list[str]:
     for sentence in sentences:
         words = sentence.split()
 
-        for rawWord in words:
-            word = rawWord.translate((str.maketrans('', '', string.punctuation)))
+        for word in words:
+            word = re.sub(r'[^\w]', '', word).lower()
 
             for node in G:
                 if word in node:
                     G.add_edge(sentence, node)
 
     # 3. PageRank
-    ranks = pagerank(G.adjacency_matrix(), 100, 0.85)
+    ranks = pagerank(G.adjacency_matrix(), 20, 0.99)
     ranks = sorted(zip(G, ranks), reverse=True, key=lambda x: x[1])
     ranks = [rank[0] for rank in ranks]
 
