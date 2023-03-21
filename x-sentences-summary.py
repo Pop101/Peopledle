@@ -38,7 +38,7 @@ def summary(sentences:set[str]) -> list[str]:
                     G.add_edge(sentence, node)
 
     # 3. PageRank
-    ranks = pagerank(G.adjacency_matrix(), 20, 0.99)
+    ranks = pagerank(G.adjacency_matrix(), 20, 0.65)
     ranks = sorted(zip(G, ranks), reverse=True, key=lambda x: x[1])
     ranks = [rank[0] for rank in ranks]
 
