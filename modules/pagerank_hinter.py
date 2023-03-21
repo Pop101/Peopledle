@@ -1,8 +1,8 @@
 import json
-from Graph import WeightedUndirectedGraph as Graph
-from Graph import pagerank
-from stopwords import stopwords
-from determinism import random, randint, reseed, set_seed
+from .Graph import WeightedUndirectedGraph as Graph
+from .Graph import pagerank
+from .stopwords import stopwords
+from .determinism import random, randint, reseed, set_seed
 import re
 
 
