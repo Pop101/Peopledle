@@ -1,7 +1,8 @@
 import json
-from modules.Graph import WeightedUndirectedGraph as Graph
-from modules.Graph import pagerank
-from modules.stopwords import stopwords
+from Graph import WeightedUndirectedGraph as Graph
+from Graph import pagerank
+from stopwords import stopwords
+from determinism import random, randint, reseed, set_seed
 import re
 
 
@@ -12,6 +13,35 @@ def select(ranked_sentences:dict[str, float], number:int) -> list[str]:
     ranked_sentences = sorted(ranked_sentences.items(), key=lambda x: x[1], reverse=True)
     return [ranked_sentences[i][0] for i in range(0, len(ranked_sentences), len(ranked_sentences) // number + 1)][::-1]
 
+def randomize_const(ranked_sentences:dict[str, float], const:float, seed = 0) -> dict[str, float]:
+    # Randomizes the ranking of each sentence by a constant
+    # This is to prevent the same sentences being selected
+    # every time
+    # Note that the const is scaled by the average ranking
+    average_rank = sum(ranked_sentences.values()) / len(ranked_sentences)
+    const = average_rank * const
+    
+    set_seed(seed)
+    for sentence in ranked_sentences:
+        ranked_sentences[sentence] += (random() - 0.5) * 2 * const
+        reseed()
+    
+    return ranked_sentences
+
+def randomize_scalar(ranked_sentences:dict[str, float], scalar:float, seed = 0) -> dict[str, float]:
+    # Randomizes the ranking of each sentence by a scalar
+    # This is to prevent the same sentences being selected
+    # every time
+    # Note that the scalar is not scaled by the average ranking
+    set_seed(seed)
+    for sentence in ranked_sentences:
+        ranked_sentences[sentence] *= (1 + (random() - 0.5) * 2 * scalar)
+        reseed()
+    
+    return ranked_sentences
+    
+
+    
 def rank(sentences_to_rank:set[str], all_sentences:set[str]=set()) -> dict[str, float]:
     # PRE-PROCESSING
     G = Graph()
@@ -54,6 +84,7 @@ def main():
         sentences = set(loaded_json["sentences"])
         
     ranked_sentences = rank(sentences)
+    ranked_sentences = randomize_const(ranked_sentences, 0.1)
     important_sentences = select(ranked_sentences, 5)
 
     for i, sentence in enumerate(important_sentences):
