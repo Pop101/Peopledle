@@ -93,7 +93,7 @@ def populate_person_details(name: str) -> str:
     """Given a person's name,
     fetches their details off wikipedia and stores them in the db.
     """
-    summary = wikipedia.get_page_summary(name)
+    summary_markup = wikipedia.get_page_html_summary(name)
     content = wikipedia.get_page_text(name)
     
     # Remove references and bibliography sections from the content        
@@ -112,7 +112,7 @@ def populate_person_details(name: str) -> str:
     # Get all sentences that contain the person's name
     # (this is used to generate the questions later)
     sentences_with_name = list()
-    for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", summary + ". " + content):
+    for sentence in re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", content):
         name_part_list = name.split()
         for name_part in name_part_list:
             if len(name_part) >= 3 and name_part in sentence:
@@ -149,7 +149,7 @@ def populate_person_details(name: str) -> str:
         "categories": list(), # would be cool to get this to work, just in general. Good hint system
         **db[db_name], # overwrite the above with any existing data
         "img": img,
-        "summary": summary,
+        "summary": summary_markup,
         "content": content,
         "sentences": sentences_with_name,
     }

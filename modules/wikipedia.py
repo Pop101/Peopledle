@@ -93,10 +93,13 @@ def get_page_url(page: str) -> str:
     return wiki_request(page, {"prop": "info", "inprop": "url"})["fullurl"]
 
 
-def get_page_summary(page: str) -> str:
-    """Gets the page URL for the given page"""
+def get_page_html_summary(page: str) -> str:
+    """Gets the summary, in html markup, for the given page"""
     return wiki_request(page, {"prop": "extracts", "exintro": "", "exsentences": 10})["extract"]
 
+def get_page_summary(page: str) -> str:
+    """Gets the summary, in plaintext, for the given page"""
+    return wiki_request(page, {"prop": "extracts", "explaintext": "", "exintro": "", "exsentences": 10})["extract"]
 
 def get_page_text(page: str) -> str:
     """Gets the full page plaintext for the given page"""
