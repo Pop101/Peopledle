@@ -1,5 +1,6 @@
 import json
-import networkx as nx
+from modules.Graph import WeightedUndirectedGraph as Graph
+from modules.Graph import pagerank
 import string
 
 def select(sentences:set[str], number:int):
@@ -11,7 +12,7 @@ def select(sentences:set[str], number:int):
 
 def summary(sentences:set[str]) -> list[str]:
     # PRE-PROCESSING
-    G = nx.Graph()
+    G = Graph()
 
     # 1. Construct all nodes, one node per sentence
     for sentence in sentences:
@@ -28,14 +29,16 @@ def summary(sentences:set[str]) -> list[str]:
         for rawWord in words:
             word = rawWord.translate((str.maketrans('', '', string.punctuation)))
 
-            for node in G.nodes:
+            for node in G:
                 if word in node:
                     G.add_edge(sentence, node)
 
     # 3. PageRank
-    pr = nx.pagerank(G)
+    ranks = pagerank(G.adjacency_matrix(), 100, 0.85)
+    ranks = sorted(zip(G, ranks), reverse=True, key=lambda x: x[1])
+    ranks = [rank[0] for rank in ranks]
 
-    return sorted(pr, key=pr.get)
+    return ranks
 
 
 
@@ -44,13 +47,12 @@ def summary(sentences:set[str]) -> list[str]:
 # DEV: EVERYTHING PAST THIS POINT DEBUG AND TESTING
 def main():
     print("\n\n\nTESTING RESULTS")
-    with open('data/ABBA.json') as file:
+    with open('data/Abraham Lincoln.json') as file:
         loadedJSON = json.load(file)
         sentences = set(loadedJSON["sentences"])
         importantSentences = select(sentences, 6)
 
-        for i in range(0, len(importantSentences)):
-            sentence = importantSentences[i]
+        for i, sentence in enumerate(importantSentences):
             print(f"SENTENCE {i + 1} IS THE SENTENCE \"{sentence}\"")
 
 if __name__ == "__main__":
