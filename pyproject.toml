@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "peopledle"
+version = "0.1.0"
+description = ""
+authors = ["Pop101 <leon@leibmann.org>", "Rich Chen <rc2002@uw.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Flask = "^2.2.2"
+waitress = "^2.1.2"
+anyascii = "^0.3.1"
+APScheduler = "^3.9.1.post1"
+PyYAML = "^6.0.0"
+numpy = "^1.25.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

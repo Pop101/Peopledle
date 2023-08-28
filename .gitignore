@@ -3,3 +3,4 @@ data/*
 day.txt
 metrics.db
 config.yml
+*.lock
