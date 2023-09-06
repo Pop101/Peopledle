@@ -13,7 +13,7 @@ Scrape Delay: 0.1 # Delay between scraping pages in seconds
 Scrape Data Location: "./data" # Location of scraped data
 Database Location: "./metrics.db"
 
-Version: "v0.1.1"
+Version: "v0.1.2"
 Server Debug: False
 
 # A list of additional people to add to the game
