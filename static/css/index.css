@@ -143,7 +143,6 @@ a:hover:not(.btn) {
 
 .flex>* {
     margin: 0 1vmax;
-    min-height: 100%;
 }
 
 .f-start {
@@ -244,6 +243,10 @@ a:hover:not(.btn) {
     .columns {
         column-count: 1;
     }
+
+    .merged-input {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 1080px) {
@@ -257,12 +260,16 @@ a:hover:not(.btn) {
     }
 
     body {
-        font-size: 2vw;
+        font-size: 2vmax;
     }
 
     h1,
     h2 {
         font-size: 2em;
+    }
+
+    ul {
+        padding-left: 0;
     }
 
     .merged-input>* {
@@ -271,10 +278,10 @@ a:hover:not(.btn) {
 
     .glide__slide .flex {
         flex-direction: column;
-        font-size: 4vw;
+        /*font-size: 4vw;*/
     }
 
     .glide__slide h2 {
-        font-size: 4vw;
+        /*font-size: 4vw;*/
     }
 }

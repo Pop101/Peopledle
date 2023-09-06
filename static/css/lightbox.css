@@ -51,6 +51,7 @@
     background: white;
     width: fit-content;
     height: fit-content;
+    max-height: 80vh;
     z-index: 1000;
     overflow: auto;
     margin: 3vmax;
