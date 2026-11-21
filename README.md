@@ -1,51 +1,34 @@
-# Peopledle: Guess the Person
+# Peopledle
 
-[![GitHub issues](https://img.shields.io/github/issues/Pop101/Peopledle)]([https://](https://github.com/Pop101/Peopledle/issues))
+Guess a person from clues drawn from their Wikipedia article. Each wrong guess reveals a more telling clue.
 
-# Table of Contents
+[![Open GitHub issues](https://img.shields.io/github/issues/Pop101/Peopledle?style=flat-square)](https://github.com/Pop101/Peopledle/issues)
 
-- [Peopledle: Guess the Person](#peopledle-guess-the-person)
-- [Table of Contents](#table-of-contents)
+![A Peopledle puzzle with one clue, a guess field, and a link to past puzzles](.github/screenshot.png)
+
+## Table of Contents
+
 - [Overview](#overview)
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
-  - [Usage](#usage)
+- [How to Play](#how-to-play)
 
-# Overview
+## Overview
 
-Guess the person from 5 sentences about them from their wikipedia page.
-Every guess reveals more information about the person, starting from obscure sentences from their page, to more and more revealing ones.
+I built this with Rich as a daily guessing game. It ranks article sentences with PageRank, then reveals them from less to more revealing. Browse previous people to play an older puzzle.
 
-Try it out at [https://peopledle.leibmann.org](https://peopledle.leibmann.org)!
+## Technologies
 
-![Screenshot](.github/screenshot.png)
+- [Flask](https://flask.palletsprojects.com/)
+- [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/)
+- [NumPy](https://numpy.org/)
+- [APScheduler](https://apscheduler.readthedocs.io/)
+- [MediaWiki Action API](https://www.mediawiki.org/wiki/API:Main_page)
 
-# Technologies
+## Getting Started
 
-This project is created with:
+The manifest targets Python 3.11 or later within 3.x. The source entry point is [`webserver.py`](webserver.py); it reads [`config.yml`](config.yml), has a Wikipedia data-preparation path, and binds to all interfaces. Review it before running on an isolated machine. A clean start and the hosted game's current availability weren't verified.
 
-- [Flask](https://flask.palletsprojects.com/en/2.0.x/): 2.0.2
-- [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/): 2.1.2
-- [SVG Spinners](https://github.com/n3r4zzurr0/svg-spinners)
-- [AP Scheduler](https://apscheduler.readthedocs.io/en/stable/): 3.9.0
-- [AnyAscii](https://github.com/anyascii/anyascii): 0.3.1
-  
-# Getting Started
+## How to Play
 
-Clone the Repo \
-```git clone https://github.com/Pop101/Peopledle``` \
-Enter the repo and Install requirements \
-```cd Peopledle && sudo python3 -m pip install -r requirements```
-
-Launch the webserver \
-```python3 webserver.py```
-
-## Usage
-
-Just connect to the webserver and start guessing! \
-```http://localhost:8787```
-
-You can always customize anything in
-```config.yml```, just note that doing so
-might require you to restart the webserver
-or redownload the people (delete the ```./data/``` folder)
+Read the first clue and submit a name. Continue guessing as clues are revealed, or choose **Past Peoples** for an earlier puzzle. Compare this older capture with the checked-in source if interface details differ.
